@@ -6,6 +6,7 @@ import express from 'express';
 import cors from 'cors';
 import crawlingRouter from '../backend/src/routers/crawl/crawl.js';
 import cafeRouter from '../backend/src/routers/cafe/cafeRouter.js';
+import communityRouter from './src/routers/community/communityRouter.js';
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -13,6 +14,7 @@ app.use(bodyParser.json());
 
 app.use('/', crawlingRouter);
 app.use('/', cafeRouter);
+app.use('/', communityRouter);
 
 app.use(cors({
   origin: ["http://localhost:9101"], // 접근 권한을 부여하는 도메인들의 배열

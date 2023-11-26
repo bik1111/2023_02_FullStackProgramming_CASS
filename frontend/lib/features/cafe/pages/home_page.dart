@@ -58,12 +58,14 @@ class _HomePageState extends State<HomePage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'No cafes available.',
+                                        '등록된 카페가 없습니다.',
                                         style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 13,
                                           fontWeight: FontWeight.bold,
+                                          color: Colors.grey
                                         ),
                                       ),
+
                                       SizedBox(height: 8),
                                       ElevatedButton(
                                         onPressed: () {
@@ -74,7 +76,11 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                           );
                                         },
-                                        child: Text('Add a new cafe'),
+                                        style: ElevatedButton.styleFrom(
+                                              backgroundColor: const Color.fromARGB(255, 37, 118, 39),
+                                              foregroundColor: Colors.white // 초록색으로 변경
+                                         ),
+                                        child: Text('나만의 카페 추가하기'),
                                       ),
                                     ],
                                   ),

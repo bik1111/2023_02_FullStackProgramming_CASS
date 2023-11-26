@@ -505,8 +505,10 @@
 /Users/jincheol/Desktop/full_stack_project/frontend/lib/features/cafe/pages/add_cafe_page.dart
 /Users/jincheol/Desktop/full_stack_project/frontend/lib/features/cafe/pages/cafe_detail_page.dart
 /Users/jincheol/Desktop/full_stack_project/frontend/lib/features/cafe/pages/community_page.dart
+/Users/jincheol/Desktop/full_stack_project/frontend/lib/features/cafe/pages/create_community_page.dart
 /Users/jincheol/Desktop/full_stack_project/frontend/lib/features/cafe/pages/home_page.dart
 /Users/jincheol/Desktop/full_stack_project/frontend/lib/features/cafe/pages/review_page.dart
+/Users/jincheol/Desktop/full_stack_project/frontend/lib/features/cafe/widgets/community_form_widget.dart
 /Users/jincheol/Desktop/full_stack_project/frontend/lib/features/cafe/widgets/profile_widget.dart
 /Users/jincheol/Desktop/full_stack_project/frontend/lib/main.dart
 /Users/jincheol/Desktop/full_stack_project/frontend/pubspec.yaml
