@@ -165,27 +165,34 @@ void _navigateToHome(BuildContext context, Map<String, dynamic> cafeData) {
     };
   }
 
-  Future<http.Response> _getCafeData() async {
-    final cafeName = _cafeNameController.text;
+Future<http.Response> _getCafeData() async {
+  final cafeName = _cafeNameController.text;
 
-    if (cafeName.isNotEmpty) {
-      final encodedCafeName = Uri.encodeComponent(cafeName);
-      print('Encoded Cafe Name: $encodedCafeName');
+  if (cafeName.isNotEmpty) {
+    final encodedCafeName = Uri.encodeComponent(cafeName);
+    print('Encoded Cafe Name: $encodedCafeName');
 
-      final uri = Uri.parse('http://localhost:3000/api/cafe/search?cafeName=$encodedCafeName');
-      print('Final URL: $uri');
+    final uri = Uri.parse('http://localhost:3000/api/cafe/search?cafeName=$encodedCafeName');
+    print('Final URL: $uri');
 
-      final cafeApi = CafeApi(uri.toString());
+    final cafeApi = CafeApi(uri.toString());
 
-      try {
-        final response = await cafeApi.getHttpResponse();
-        return response;
-      } catch (e) {
-        print('Error during HTTP request: $e');
-        throw e;
-      }
-    } else {
-      return http.Response('Cafe name is empty', 400);
+    try {
+      final response = await cafeApi.getHttpResponse();
+
+      // Format the JSON response for better readability
+      final encoder = JsonEncoder.withIndent('  '); // Use two spaces for indentation
+      final formattedJson = encoder.convert(jsonDecode(response.body));
+      print('Formatted JSON:\n$formattedJson');
+
+      return response;
+    } catch (e) {
+      print('Error during HTTP request: $e');
+      throw e;
     }
+  } else {
+    return http.Response('Cafe name is empty', 400);
   }
 }
+}
+

@@ -1,8 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:full_stack_project/features/cafe/api/api_service.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'create_community_page.dart';
+import 'community_detail_page.dart';
 
 class CommunityPage extends StatefulWidget {
   final Function(Map<String, dynamic>)? onCommunityCreated;
@@ -23,14 +24,15 @@ class _CommunityPageState extends State<CommunityPage> {
     _fetchCommunities();
   }
 
-  Future<void> _fetchCommunities() async {
+  Future<http.Response> _fetchCommunities() async {
     final apiHandler = GETInfoCommunityApi('localhost:3000/api/community'); // Adjust the endpoint as needed
 
     try {
       final http.Response response = await apiHandler.getHttpResponse();
 
       if (response.statusCode == 200) {
-        final List<dynamic> communityList = jsonDecode(response.body);
+        final Map<String, dynamic> responseBody = jsonDecode(response.body);
+        final List<dynamic> communityList = responseBody['data'];
 
         setState(() {
           communities = communityList.cast<Map<String, dynamic>>();
@@ -39,9 +41,12 @@ class _CommunityPageState extends State<CommunityPage> {
         // Handle error
         print('Error fetching communities. Status code: ${response.statusCode}');
       }
+
+      return response; // Add this line
     } catch (e) {
       // Handle exceptions
       print('Exception during GET request: $e');
+      rethrow; // Rethrow the exception after handling it
     }
   }
 
@@ -56,22 +61,17 @@ class _CommunityPageState extends State<CommunityPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             for (var community in communities)
-              Card(
-                child: Column(
-                  children: [
-                    Text('Title: ${community['title']}'),
-                    Text('Hashtags: ${community['hashtags']}'),
-                    // Add other community details as needed
-                  ],
-                ),
-              ),
+              _buildCommunityCard(context, community),
             if (communities.isEmpty)
-              Text('No communities yet.'),
+              Text(
+                'No communities yet.',
+                style: TextStyle(fontFamily: 'montserrat_regular.ttf'),
+              ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Color.fromARGB(255, 64, 123, 40),
         onPressed: () {
           // Navigate to the CreateCommunityPage when the button is pressed
           Navigator.push(
@@ -92,8 +92,41 @@ class _CommunityPageState extends State<CommunityPage> {
         ),
         child: Icon(
           Icons.add,
-          color: Colors.black,
+          color: Colors.white,
         ),
+      ),
+    );
+  }
+
+  Widget _buildCommunityCard(BuildContext context, Map<String, dynamic> community) {
+    return Card(
+      elevation: 2.0,
+      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      child: ListTile(
+        title: Text(
+          '${community['title'] ?? 'N/A'}',
+          style: const TextStyle(fontFamily: 'montserrat_regular.ttf', fontWeight: FontWeight.bold),
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${community['hashtags'] ?? 'N/A'}',
+              style: const TextStyle(fontFamily: 'montserrat_regular.ttf'),
+            ),
+          ],
+        ),
+        onTap: () {
+          // Navigate to the CommunityDetailPage when the ListTile is tapped
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CommunityDetailPage(
+                communityId: community['community_id'], // Replace 'id' with the actual identifier in your community map
+              ),
+            ),
+          );
+        },
       ),
     );
   }

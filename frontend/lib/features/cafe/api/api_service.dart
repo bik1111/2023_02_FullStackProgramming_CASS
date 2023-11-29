@@ -19,7 +19,7 @@ class CafeApi {
       }
     } catch (e) {
       print('Error during HTTP request: $e');
-      throw e; // Rethrow the exception if you want to handle it further up the call stack
+      throw e;
     }
   }
 }
@@ -33,7 +33,7 @@ class CreateCommunityApi {
   Future<http.Response> postHttpResponse(Map<String, dynamic> data) async {
     try {
       final response = await http.post(
-        Uri.parse('http://' + _baseUrl), // Add 'http://' here
+        Uri.parse('http://' + _baseUrl),
         body: jsonEncode(data),
         headers: {'Content-Type': 'application/json'},
       );
@@ -59,7 +59,7 @@ class GETInfoCommunityApi {
 
   Future<http.Response> getHttpResponse() async {
     try {
-      final response = await http.get(Uri.parse('http://' + _baseUrl)); // Add 'http://' here
+      final response = await http.get(Uri.parse('http://' + _baseUrl));
 
       if (response.statusCode == 200) {
         return response;
@@ -68,6 +68,31 @@ class GETInfoCommunityApi {
         throw Exception('Failed to fetch communities');
       }
     } catch (e) {
+      print('Error during HTTP request: $e');
+      throw e;
+    }
+  }
+}
+
+
+class GETCommunityBoardInfoApi {
+
+  late String _baseUrl;
+
+  GETCommunityBoardInfoApi(this._baseUrl);
+
+  Future<http.Response> getHttpResponse() async {
+
+    try {
+      final response = await http.get(Uri.parse('http://' + _baseUrl)); // Add 'http://' here
+
+      if (response.statusCode == 200) {
+        return response;
+      } else {
+        print('HTTP request failed with status: ${response.statusCode}');
+        throw Exception('Failed to fetch communities');
+      }
+    } catch(e) {
       print('Error during HTTP request: $e');
       throw e;
     }
