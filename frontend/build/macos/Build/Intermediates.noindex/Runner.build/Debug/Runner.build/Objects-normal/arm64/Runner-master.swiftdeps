@@ -1,8 +1,8 @@
 version: "Apple Swift version 5.6.1 (swiftlang-5.6.0.323.66 clang-1316.0.20.12)"
-options: "d587bc40a4a75e5d4ae77b2063253da7ef624d0b6946f6e8c2da19257daccb25"
-build_start_time: [1701255043, 859665870]
-build_end_time: [1701255044, 148624897]
+options: "37e89e850442ee1a9fbf509cab552733e128f0adba200dcbc0eebce6876aeda7"
+build_start_time: [1701576904, 667978048]
+build_end_time: [1701576905, 648643970]
 inputs:
-  "/Users/jincheol/Desktop/full_stack_project/frontend/macos/Flutter/GeneratedPluginRegistrant.swift": [1701255036, 453190326]
+  "/Users/jincheol/Desktop/full_stack_project/frontend/macos/Flutter/GeneratedPluginRegistrant.swift": [1701576883, 166449785]
   "/Users/jincheol/Desktop/full_stack_project/frontend/macos/Runner/AppDelegate.swift": [1693417036, 0]
   "/Users/jincheol/Desktop/full_stack_project/frontend/macos/Runner/MainFlutterWindow.swift": [1693417036, 0]

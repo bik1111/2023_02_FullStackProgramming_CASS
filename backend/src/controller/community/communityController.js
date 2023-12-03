@@ -1,4 +1,4 @@
-import { createMyCommunity, getMyCommunity, getMyCommunityBoardInfo, createPostInCommunity } from '../../service/community/communityService.js';
+import { createMyCommunity, getMyCommunity, getMyCommunityBoardInfo, createPostInCommunity, modifyPost, deleteCommunityPost } from '../../service/community/communityService.js';
 
 export const createCommunity = async (req, res) => {
     const { title, hashtags } = req.body;
@@ -49,5 +49,30 @@ export const createPost = async (req, res) => {
         ok: true,
         msg: "게시글 생성 성공",
         data: createPostResult
+    })
+}
+
+export const modfiyPost = async (req, res) => {
+    const { title, content } = req.body;
+    const { id } = req.params;
+
+    const modifyPostResult = await modifyPost(title, content, id);
+
+    return res.status(200).json({
+        ok: true,
+        msg: "게시글 수정 성공",
+        data: modifyPostResult
+    })
+}
+
+export const deletePost = async (req, res) => {
+    const { id } = req.params;
+
+    const deletePostResult = await deleteCommunityPost(id);
+
+    return res.status(200).json({
+        ok: true,
+        msg: "게시글 삭제 성공",
+        data: deletePostResult
     })
 }

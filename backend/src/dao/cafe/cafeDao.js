@@ -22,3 +22,12 @@ export const addMyFavoriteCafe = async (connection, cafeId) => {
 
         return addMyFavoriteCafeRow;
 }
+
+export const getAllCafeInfoDAO = async (connection) => {
+        const getAllCafeInfoQuery = `
+            SELECT cafe_id, name, address, number, lat, lng FROM cafe;
+        `;
+        const [getAllCafeInfoRows] = await connection.query(getAllCafeInfoQuery);
+
+        return getAllCafeInfoRows;
+}

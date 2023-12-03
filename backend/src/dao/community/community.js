@@ -43,3 +43,23 @@ export const createPostInCommunityDAO = async (connection, title, content, commu
 
     return createPostInCommunityRows;
 }
+
+export const modifyPostDAO = async (connection, title, content, id) => {
+    const modifyPostQuery = `
+        UPDATE community_board SET content_title = ?, content_detail = ?, createdAt = UTC_TIMESTAMP() WHERE content_id = ?;
+    `;
+    const modifyPostParams = [title, content, id];
+    const [modifyPostRows] = await connection.query(modifyPostQuery, modifyPostParams);
+
+    return modifyPostRows;
+}
+
+export const deletePostDAO = async (connection, id) => {
+    const deletePostQuery = `
+        DELETE FROM community_board WHERE content_id = ?;
+    `;
+    const deletePostParams = [id];
+    const [deletePostRows] = await connection.query(deletePostQuery, deletePostParams);
+
+    return deletePostRows;
+}

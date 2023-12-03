@@ -7,20 +7,29 @@ import cors from 'cors';
 import crawlingRouter from '../backend/src/routers/crawl/crawl.js';
 import cafeRouter from '../backend/src/routers/cafe/cafeRouter.js';
 import communityRouter from './src/routers/community/communityRouter.js';
+import userRouter from './src/routers/user/userRouter.js';
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use('/', crawlingRouter);
+app.use('/', userRouter);
 app.use('/', cafeRouter);
 app.use('/', communityRouter);
 
 app.use(cors({
-  origin: ["http://localhost:9101"], // 접근 권한을 부여하는 도메인들의 배열
-  credentials: true, // 응답 헤더에 Access-Control-Allow-Credentials 추가
-  optionsSuccessStatus: 200, // 응답 상태 200으로 설정
+  origin: "*", // Allow requests from any origin
+  credentials: true, // Include Access-Control-Allow-Credentials in the response headers
+  optionsSuccessStatus: 200, // Set response status to 200 for preflight requests
 }));
+
+// Additional headers to handle credentials
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", req.headers.origin);
+  res.header("Access-Control-Allow-Credentials", true);
+  next();
+});
 
 
 const PORT = 3000;

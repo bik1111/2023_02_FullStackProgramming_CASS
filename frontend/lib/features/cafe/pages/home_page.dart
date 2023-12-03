@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:full_stack_project/features/cafe/models/cafe.dart';
+import 'package:full_stack_project/features/cafe/models/cafe.dart' as CafeModel;
 import 'package:full_stack_project/features/cafe/models/cafe_list.dart';
 import 'package:full_stack_project/features/cafe/pages/add_cafe_page.dart';
 import 'package:full_stack_project/features/cafe/pages/cafe_detail_page.dart';
@@ -62,10 +62,9 @@ class _HomePageState extends State<HomePage> {
                                         style: TextStyle(
                                           fontSize: 13,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.grey
+                                          color: Colors.grey,
                                         ),
                                       ),
-
                                       SizedBox(height: 8),
                                       ElevatedButton(
                                         onPressed: () {
@@ -77,9 +76,9 @@ class _HomePageState extends State<HomePage> {
                                           );
                                         },
                                         style: ElevatedButton.styleFrom(
-                                              backgroundColor: const Color.fromARGB(255, 37, 118, 39),
-                                              foregroundColor: Colors.white // 초록색으로 변경
-                                         ),
+                                          backgroundColor: const Color.fromARGB(255, 37, 118, 39),
+                                          foregroundColor: Colors.white,
+                                        ),
                                         child: Text('나만의 카페 추가하기'),
                                       ),
                                     ],
@@ -96,24 +95,23 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       floatingActionButton: _currentIndex == 0 && Provider.of<CafeList>(context).cafes.isNotEmpty && widget.showAddButton
-  ? FloatingActionButton(
-      backgroundColor: Colors.grey[200],
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AddCafePage()),
-        );
-      },
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Icon(
-        Icons.add,
-        color: Colors.black,
-      ),
-    )
-  : null,
-
+          ? FloatingActionButton(
+              backgroundColor: Colors.grey[200],
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddCafePage()),
+                );
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Icon(
+                Icons.add,
+                color: Colors.black,
+              ),
+            )
+          : null,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         items: [
@@ -146,7 +144,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildCafeRowWidget(
-    Cafe cafe,
+    CafeModel.Cafe cafe,
     BuildContext context, {
     VoidCallback? onDelete,
     VoidCallback? onView,
@@ -201,12 +199,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _deleteCafe(Cafe cafe) {
+  void _deleteCafe(CafeModel.Cafe cafe) {
     final cafeList = Provider.of<CafeList>(context, listen: false);
     cafeList.removeCafe(cafe);
   }
 
-  void _viewCafe(Cafe cafe) {
+  void _viewCafe(CafeModel.Cafe cafe) {
     Navigator.push(
       context,
       MaterialPageRoute(

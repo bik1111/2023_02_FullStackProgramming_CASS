@@ -1,8 +1,26 @@
+buildscript {
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.0'
+    }
+    ext.kotlin_version = '1.5.20'
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+
 plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
+
 
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
@@ -17,6 +35,18 @@ if (flutterVersionCode == null) {
     flutterVersionCode = '1'
 }
 
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "https://jitpack.io"
+        }
+        maven {
+            url 'https://maven.google.com/'
+        }
+    }
+}
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
@@ -24,7 +54,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.full_stack_project"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 33
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -45,7 +75,8 @@ android {
         applicationId "com.example.full_stack_project"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 23
+        targetSdkVersion 29
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -60,8 +91,8 @@ android {
     }
 }
 
+
 flutter {
     source '../..'
 }
 
-dependencies {}

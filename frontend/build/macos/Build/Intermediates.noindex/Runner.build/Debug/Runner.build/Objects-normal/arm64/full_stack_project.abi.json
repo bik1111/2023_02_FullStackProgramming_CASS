@@ -337,6 +337,13 @@
       "moduleName": "full_stack_project"
     },
     {
+      "kind": "Import",
+      "name": "shared_preferences_foundation",
+      "printedName": "shared_preferences_foundation",
+      "declKind": "Import",
+      "moduleName": "full_stack_project"
+    },
+    {
       "kind": "Function",
       "name": "RegisterGeneratedPlugins",
       "printedName": "RegisterGeneratedPlugins(registry:)",

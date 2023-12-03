@@ -1,4 +1,4 @@
-import { getCafe, addMyFavoriteCafeInfo } from '../../service/cafe/cafeService.js';
+import { getCafe, addMyFavoriteCafeInfo, getAllCafeInfo } from '../../service/cafe/cafeService.js';
 
 
 export const getCafeByCafeName =  async (req, res) => {
@@ -19,4 +19,14 @@ export const addMyFavoriteCafe = async (req, res) => {
     const { cafeId } = req.body;
     const addMyFavoriteCafeResult = await addMyFavoriteCafeInfo(cafeId);
 
+}
+
+export const getAllCafeInformation = async (req, res) => {
+    const getAllCafeInfoResult = await getAllCafeInfo();
+
+    return res.status(200).json({
+        ok: true,
+        msg: "카페 정보 조회 성공",
+        data: getAllCafeInfoResult
+    })
 }

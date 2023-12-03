@@ -43,7 +43,7 @@ void _createCommunity() async {
   final String hashtags = _hashtagsController.text;
 
   if (title.isNotEmpty) {
-    final apiHandler = CreateCommunityApi('localhost:3000/api/community/create');
+    final apiHandler = CreateCommunityApi('http://localhost:3000/api/community/create');
     final data = {'title': title, 'hashtags': hashtags};
 
     try {

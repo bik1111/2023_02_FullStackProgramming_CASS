@@ -135,9 +135,12 @@ class _AddCafePageState extends State<AddCafePage> {
 
     // 선택한 카페를 CafeList에 추가
     cafeList.addCafe(Cafe(
+      cafe_id: cafe['cafe_id'] ?? 'N/A',
       name: cafe['name'] ?? 'N/A',
       address: cafe['address'] ?? 'N/A',
       number: cafe['number'] ?? 'N/A',
+      latitude: cafe['latitude'] ?? 'N/A',
+      longitude: cafe['longitude'] ?? 'N/A',
     ));
 
     // 선택한 카페 정보를 HomePage로 전달

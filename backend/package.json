@@ -17,10 +17,13 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.6.3",
     "nodemon": "^3.0.1",
     "puppeteer": "^21.5.2",
     "puppeteer-core": "^21.5.2",
-    "puppeteer-extra": "^3.3.6"
+    "puppeteer-extra": "^3.3.6",
+    "redis": "^4.6.11",
+    "util": "^0.12.5"
   }
 }
