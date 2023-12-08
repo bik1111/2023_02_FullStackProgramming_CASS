@@ -1,5 +1,3 @@
-// create_post_page.dart
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,25 +18,44 @@ class _YourWritePostScreenState extends State<YourWritePostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('글 쓰기'),
+        title: Text('Write a Post'),
+        backgroundColor: Colors.green, // Change the app bar color here
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(
+              'Title',
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 8.0),
             TextField(
               controller: _titleController,
               decoration: InputDecoration(
-                labelText: '제목',
+                border: OutlineInputBorder(),
+                hintText: 'Enter the title',
               ),
             ),
             SizedBox(height: 16.0),
+            Text(
+              'Content',
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 8.0),
             TextField(
               controller: _contentController,
               maxLines: null,
               decoration: InputDecoration(
-                labelText: '내용을 입력하세요.',
+                border: OutlineInputBorder(),
+                hintText: 'Enter the content',
               ),
             ),
             SizedBox(height: 16.0),
@@ -52,7 +69,16 @@ class _YourWritePostScreenState extends State<YourWritePostScreen> {
 
                   Navigator.pop(context);
                 },
-                child: Text('완료'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green, // Change the button color here
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    'Submit',
+                    style: TextStyle(fontSize: 18.0),
+                  ),
+                ),
               ),
             ),
           ],

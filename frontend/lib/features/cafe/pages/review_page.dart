@@ -1,72 +1,78 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:full_stack_project/features/cafe/pages/create_reveiw.dart';
 import 'package:http/http.dart' as http;
-import 'package:full_stack_project/features/cafe/models/cafe.dart'; // Import the Cafe class from the models file
+import 'dart:convert';
+import 'package:full_stack_project/features/cafe/models/cafe.dart';
+import 'package:full_stack_project/features/cafe/pages/create_reveiw.dart';
 
-class ReviewPage extends StatelessWidget {
-  get cafe => null;
-
-Future<List<Cafe>> _fetchCafeList() async {
-  final apiUrl = 'http://localhost:3000/api/cafe';
-
-  final response = await http.get(Uri.parse(apiUrl));
-
-  if (response.statusCode == 200) {
-    final List<dynamic> responseData = jsonDecode(response.body)['data'];
-    return responseData
-        .map((json) => Cafe.fromJson(json))
-        .toList();
-  } else {
-    throw Exception('Failed to load cafe information');
-  }
+class ReviewPage extends StatefulWidget {
+  @override
+  _ReviewPageState createState() => _ReviewPageState();
 }
+
+class _ReviewPageState extends State<ReviewPage> {
+  late List<Cafe> _cafeList;
+  late List<Cafe> _filteredCafeList;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCafeList();
+  }
+
+  Future<void> _fetchCafeList() async {
+    final apiUrl = 'http://localhost:3000/api/cafe';
+
+    final response = await http.get(Uri.parse(apiUrl));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = jsonDecode(response.body)['data'];
+      setState(() {
+        _cafeList = responseData.map((json) => Cafe.fromJson(json)).toList();
+        _filteredCafeList = List.from(_cafeList);
+      });
+    } else {
+      throw Exception('Failed to load cafe information');
+    }
+  }
+
+  void _filterAndSortCafeList(String query) {
+    setState(() {
+      _filteredCafeList = _cafeList
+          .where((cafe) => cafe.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+
+      _filteredCafeList.sort((a, b) => a.name.compareTo(b.name));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Cafe Review Page'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.rate_review),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ReviewFormPage(cafe: cafe),
-                ),
-              );
-            },
-          ),
-        ],
       ),
-      body: FutureBuilder(
-        future: _fetchCafeList(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          } else if (!snapshot.hasData || (snapshot.data as List).isEmpty) {
-            return Center(
-              child: Text('No cafe data available'),
-            );
-          } else {
-            final cafeList = snapshot.data as List<Cafe>;
-            return ListView.builder(
-              itemCount: cafeList.length,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              onChanged: _filterAndSortCafeList,
+              decoration: InputDecoration(
+                labelText: '원하는 카페를 검색해 보세요.',
+                prefixIcon: Icon(Icons.search),
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _filteredCafeList.length,
               itemBuilder: (context, index) {
-                final cafe = cafeList[index];
+                final cafe = _filteredCafeList[index];
                 return _buildCafeCard(cafe, context);
               },
-            );
-          }
-        },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -105,7 +111,7 @@ Future<List<Cafe>> _fetchCafeList() async {
                   ),
                 );
               },
-              child: Text('Leave a Review'),
+              child: Text('리뷰 남기기'),
             ),
           ],
         ),

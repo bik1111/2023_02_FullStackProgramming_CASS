@@ -3,6 +3,10 @@ import 'package:full_stack_project/features/cafe/api/api_service.dart';
 import 'package:http/http.dart' as http;
 
 class CommunityFormWidget extends StatefulWidget {
+  final VoidCallback? onCommunityCreated;
+
+  CommunityFormWidget({Key? key, this.onCommunityCreated}) : super(key: key);
+
   @override
   _CommunityFormWidgetState createState() => _CommunityFormWidgetState();
 }
@@ -38,31 +42,57 @@ class _CommunityFormWidgetState extends State<CommunityFormWidget> {
     );
   }
 
-void _createCommunity() async {
-  final String title = _communityNameController.text;
-  final String hashtags = _hashtagsController.text;
+  void _createCommunity() async {
+    final String title = _communityNameController.text;
+    final String hashtags = _hashtagsController.text;
 
-  if (title.isNotEmpty) {
-    final apiHandler = CreateCommunityApi('http://localhost:3000/api/community/create');
-    final data = {'title': title, 'hashtags': hashtags};
+    if (title.isNotEmpty) {
+      final apiHandler = CreateCommunityApi('http://localhost:3000/api/community/create');
+      final data = {'title': title, 'hashtags': hashtags};
 
-    try {
-      final http.Response response = await apiHandler.postHttpResponse(data);
+      try {
+        final http.Response response = await apiHandler.postHttpResponse(data);
 
-      if (response.statusCode == 200) {
-        // Successful POST request
-        print('Community created successfully!');
-      } else {
-        // Handle error
-        print('Error creating community. Status code: ${response.statusCode}');
+        if (response.statusCode == 200) {
+          // Call the callback to notify the parent widget
+          widget.onCommunityCreated?.call();
+
+          // Fetch communities immediately after creating one
+          await _fetchCommunities();
+
+          // Show completion dialog
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Community Created'),
+                content: Text('Your community has been created successfully!'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          // Handle error
+          print('Error creating community. Status code: ${response.statusCode}');
+        }
+      } catch (e) {
+        // Handle exceptions
+        print('Exception during POST request: $e');
       }
-    } catch (e) {
-      // Handle exceptions
-      print('Exception during POST request: $e');
+    } else {
+      print('Community name is empty. Please provide a community name.');
     }
-  } else {
-    print('Community name is empty. Please provide a community name.');
   }
-}
+
+  Future<void> _fetchCommunities() async {
+    // Your logic for fetching communities goes here
+  }
 }
 

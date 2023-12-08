@@ -8,6 +8,10 @@ import 'package:provider/provider.dart';
 import '../api/api_service.dart';
 
 class AddCafePage extends StatefulWidget {
+  final String username; // Add this line
+
+  AddCafePage({Key? key, required this.username}) : super(key: key); // Add this line
+
   @override
   _AddCafePageState createState() => _AddCafePageState();
 }
@@ -130,28 +134,33 @@ class _AddCafePageState extends State<AddCafePage> {
     );
   }
 
-  void _addToCafeList(Map<String, dynamic> cafe) {
-    final cafeList = Provider.of<CafeList>(context, listen: false);
+void _addToCafeList(Map<String, dynamic> cafe) {
+  final cafeList = Provider.of<CafeList>(context, listen: false);
 
-    // 선택한 카페를 CafeList에 추가
-    cafeList.addCafe(Cafe(
-      cafe_id: cafe['cafe_id'] ?? 'N/A',
-      name: cafe['name'] ?? 'N/A',
-      address: cafe['address'] ?? 'N/A',
-      number: cafe['number'] ?? 'N/A',
-      latitude: cafe['latitude'] ?? 'N/A',
-      longitude: cafe['longitude'] ?? 'N/A',
-    ));
+  // Convert latitude and longitude to double
+  double latitude = cafe['latitude'] != null ? double.tryParse(cafe['latitude']) ?? 0.0 : 0.0;
+  double longitude = cafe['longitude'] != null ? double.tryParse(cafe['longitude']) ?? 0.0 : 0.0;
 
-    // 선택한 카페 정보를 HomePage로 전달
-    _navigateToHome(context, cafe);
-  }
+  // 선택한 카페를 CafeList에 추가
+  cafeList.addCafe(Cafe(
+    cafe_id: cafe['cafe_id'] ?? 'N/A',
+    name: cafe['name'] ?? 'N/A',
+    address: cafe['address'] ?? 'N/A',
+    number: cafe['number'] ?? 'N/A',
+    latitude: latitude,
+    longitude: longitude,
+  ));
 
-void _navigateToHome(BuildContext context, Map<String, dynamic> cafeData) {
+  // 선택한 카페 정보를 HomePage로 전달
+_navigateToHome(context, cafe, widget.username);
+}
+
+
+void _navigateToHome(BuildContext context, Map<String, dynamic> _cafeDataList, String username) {
   Navigator.push(
     context,
     MaterialPageRoute(
-      builder: (context) => HomePage(cafeData: cafeData, showAddButton: false),
+      builder: (context) => HomePage(cafeData: _cafeDataList, showAddButton: false, username: username),
     ),
   ).then((_) {
     Navigator.pop(context);

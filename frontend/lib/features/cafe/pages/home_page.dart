@@ -1,3 +1,5 @@
+// HomePage.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:full_stack_project/features/cafe/models/cafe.dart' as CafeModel;
@@ -10,10 +12,10 @@ import 'package:full_stack_project/features/cafe/widgets/profile_widget.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  final Map<String, dynamic>? cafeData;
+  final String username;
+  final Map<String, dynamic>? cafeData; // Use Map<String, dynamic> instead of dynamic
   final bool showAddButton;
-
-  HomePage({Key? key, this.cafeData, this.showAddButton = true}) : super(key: key);
+  HomePage({Key? key, this.cafeData, this.showAddButton = true, required this.username}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -31,7 +33,7 @@ class _HomePageState extends State<HomePage> {
           Column(
             children: [
               Expanded(
-                child: ProfileWidget(),
+                child: ProfileWidget(username: widget.username),
               ),
               Expanded(
                 child: _currentIndex == 0
@@ -66,21 +68,22 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                       ),
                                       SizedBox(height: 8),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => AddCafePage(),
-                                            ),
-                                          );
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color.fromARGB(255, 37, 118, 39),
-                                          foregroundColor: Colors.white,
-                                        ),
-                                        child: Text('나만의 카페 추가하기'),
-                                      ),
+ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddCafePage(username: widget.username), // Add username parameter
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: const Color.fromARGB(255, 37, 118, 39),
+    foregroundColor: Colors.white,
+  ),
+  child: Text('나만의 카페 추가하기'),
+),
+
                                     ],
                                   ),
                                 );
@@ -94,24 +97,26 @@ class _HomePageState extends State<HomePage> {
           CommunityPage(),
         ],
       ),
-      floatingActionButton: _currentIndex == 0 && Provider.of<CafeList>(context).cafes.isNotEmpty && widget.showAddButton
-          ? FloatingActionButton(
-              backgroundColor: Colors.grey[200],
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddCafePage()),
-                );
-              },
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: Icon(
-                Icons.add,
-                color: Colors.black,
-              ),
-            )
-          : null,
+floatingActionButton: _currentIndex == 0 && Provider.of<CafeList>(context).cafes.isNotEmpty
+    ? FloatingActionButton(
+        backgroundColor: Colors.grey[200],
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddCafePage(username: widget.username), // Provide the username
+            ),
+          );
+        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Icon(
+          Icons.add,
+          color: Colors.black,
+        ),
+      )
+    : null,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         items: [

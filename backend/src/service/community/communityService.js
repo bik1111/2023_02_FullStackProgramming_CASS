@@ -1,10 +1,10 @@
 import pool from "../../config/database.js";
 import { createMyCommunityDAO, getMyCommunityDAO, getMyCommunityBoardInfoDAO, createPostInCommunityDAO, modifyPostDAO, deletePostDAO } from "../../dao/community/community.js";
 
-export const createMyCommunity = async (title, hashtags) => {
+export const createMyCommunity = async (title, hashtags, img_url) => {
 
     const connection = await pool.getConnection(async (conn) => conn);
-    const createMyCommunityResult = await createMyCommunityDAO(connection, title, hashtags);
+    const createMyCommunityResult = await createMyCommunityDAO(connection, title, hashtags, img_url);
     connection.release();
 
     return createMyCommunityResult;

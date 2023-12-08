@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:full_stack_project/features/cafe/models/cafe_list.dart';
 import 'package:full_stack_project/features/cafe/models/user.dart';
 import 'package:full_stack_project/features/cafe/pages/auth/registration_page.dart';
-import 'package:full_stack_project/provider/auth_provider.dart'; // Import AuthProvider
 import 'package:provider/provider.dart';
 
 class AuthRepository {
@@ -34,7 +33,6 @@ class MyAppConfigurator {
       providers: [
         ChangeNotifierProvider.value(value: Example()),
         ChangeNotifierProvider.value(value: CafeList()),
-        ChangeNotifierProvider(create: (_) => AuthProvider()), // Add AuthProvider
         Provider.value(value: currentUser),
       ],
       child: MyApp(currentUser: currentUser),

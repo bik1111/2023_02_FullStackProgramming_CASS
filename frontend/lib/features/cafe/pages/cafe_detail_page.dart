@@ -12,60 +12,26 @@ class CafeDetailPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Cafe Detail'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: _buildDetailCard(context),
-      ),
+      body: _buildDetailListView(context),
     );
   }
 
-  Widget _buildDetailCard(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildDetailTile('Cafe Name', cafe.name),
-          _buildDetailTile('Address', cafe.address),
-          _buildDetailTile('Number', cafe.number),
-        ],
-      ),
+  Widget _buildDetailListView(BuildContext context) {
+    return ListView(
+      children: [
+        Image.asset('assets/jpg/cafe.jpg', height: 300), // Use custom image as a header
+        _buildDetailTile(context, Icons.local_cafe, '카페 명', cafe.name),
+        _buildDetailTile(context, Icons.location_on, '주소', cafe.address),
+        _buildDetailTile(context, Icons.phone, '연락처', cafe.number),
+      ],
     );
   }
 
-  Widget _buildDetailTile(String label, String value) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.blueAccent,
-            ),
-          ),
-          SizedBox(height: 12),
-          Text(
-            value,
-            style: TextStyle(fontSize: 16),
-          ),
-        ],
-      ),
+  Widget _buildDetailTile(BuildContext context, IconData icon, String label, String value) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.green), // Set the color to green
+      title: Text(label, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+      subtitle: Text(value, style: TextStyle(fontSize: 16)),
     );
   }
 }

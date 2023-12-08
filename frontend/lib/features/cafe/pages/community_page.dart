@@ -1,15 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:full_stack_project/features/cafe/api/api_service.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'create_community_page.dart';
-import 'community_detail_page.dart';
+import 'package:flutter/material.dart';
+import 'package:full_stack_project/features/cafe/pages/community_detail_page.dart';
+import 'package:full_stack_project/features/cafe/pages/create_community_page.dart';
+import 'package:http/http.dart' as http;
 
 class CommunityPage extends StatefulWidget {
-  final Function(Map<String, dynamic>)? onCommunityCreated;
-
-  CommunityPage({Key? key, this.onCommunityCreated}) : super(key: key);
-
   @override
   _CommunityPageState createState() => _CommunityPageState();
 }
@@ -20,15 +15,14 @@ class _CommunityPageState extends State<CommunityPage> {
   @override
   void initState() {
     super.initState();
-    // Fetch community data when the widget is created
     _fetchCommunities();
   }
 
-  Future<http.Response> _fetchCommunities() async {
-    final apiHandler = GETInfoCommunityApi('localhost:3000/api/community'); // Adjust the endpoint as needed
+  Future<void> _fetchCommunities() async {
+    final apiUrl = 'http://localhost:3000/api/community'; // Replace with your API endpoint
 
     try {
-      final http.Response response = await apiHandler.getHttpResponse();
+      final response = await http.get(Uri.parse(apiUrl));
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseBody = jsonDecode(response.body);
@@ -38,15 +32,10 @@ class _CommunityPageState extends State<CommunityPage> {
           communities = communityList.cast<Map<String, dynamic>>();
         });
       } else {
-        // Handle error
         print('Error fetching communities. Status code: ${response.statusCode}');
       }
-
-      return response; // Add this line
     } catch (e) {
-      // Handle exceptions
       print('Exception during GET request: $e');
-      rethrow; // Rethrow the exception after handling it
     }
   }
 
@@ -56,36 +45,56 @@ class _CommunityPageState extends State<CommunityPage> {
       appBar: AppBar(
         title: Text('Community'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            for (var community in communities)
-              _buildCommunityCard(context, community),
-            if (communities.isEmpty)
-              Text(
-                'No communities yet.',
-                style: TextStyle(fontFamily: 'montserrat_regular.ttf'),
-              ),
-          ],
-        ),
+      body: ListView( // Wrap the Column with ListView
+        children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (var community in communities) _buildCommunityCard(context, community),
+                if (communities.isEmpty)
+                  Text(
+                    'No communities yet.',
+                    style: TextStyle(fontFamily: 'montserrat_regular.ttf'),
+                  ),
+              ],
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color.fromARGB(255, 64, 123, 40),
-        onPressed: () {
-          // Navigate to the CreateCommunityPage when the button is pressed
-          Navigator.push(
+        onPressed: () async {
+          final createdCommunity = await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => CreateCommunityPage(
-                onCommunityCreated: (createdCommunity) {
-                  setState(() {
-                    communities.add(createdCommunity);
-                  });
+                onCommunityCreated: () async {
+                  await _fetchCommunities();
                 },
               ),
             ),
           );
+
+          if (createdCommunity != null) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Community Created'),
+                  content: Text('Your community has been created successfully!'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('OK'),
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
@@ -98,36 +107,75 @@ class _CommunityPageState extends State<CommunityPage> {
     );
   }
 
-  Widget _buildCommunityCard(BuildContext context, Map<String, dynamic> community) {
-    return Card(
+Widget _buildCommunityCard(BuildContext context, Map<String, dynamic> community) {
+  double cardWidth = MediaQuery.of(context).size.width - 16.0; // Adjust margin
+
+  return Container(
+    width: cardWidth,
+    margin: EdgeInsets.symmetric(vertical: 8.0),
+    child: Card(
       elevation: 2.0,
-      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      child: ListTile(
-        title: Text(
-          '${community['title'] ?? 'N/A'}',
-          style: const TextStyle(fontFamily: 'montserrat_regular.ttf', fontWeight: FontWeight.bold),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '${community['hashtags'] ?? 'N/A'}',
-              style: const TextStyle(fontFamily: 'montserrat_regular.ttf'),
-            ),
-          ],
-        ),
-        onTap: () {
-          // Navigate to the CommunityDetailPage when the ListTile is tapped
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CommunityDetailPage(
-                communityId: community['community_id'], // Replace 'id' with the actual identifier in your community map
+      child: Container(
+        width: double.infinity, // Occupy the entire width of the Card
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        child: ListTile(
+          title: Row(
+            children: [
+              if (community['community_img'] != null)
+                Container(
+                  margin: EdgeInsets.only(right: 8.0),
+                  child: Image.network(
+                    community['community_img'],
+                    height: 100,
+                    width: 100,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      print('Error loading image: $error');
+                      return Text('Error loading image');
+                    },
+                  ),
+                ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${community['title'] ?? 'N/A'}',
+                      style: const TextStyle(
+                        fontFamily: 'montserrat_regular.ttf',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                      ),
+                    ),
+                    Text(
+                      '${community['hashtags'] ?? 'N/A'}',
+                      style: const TextStyle(
+                        fontFamily: 'montserrat_regular.ttf',
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            ],
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CommunityDetailPage(communityId: community['community_id']),
+              ),
+            );
+          },
+        ),
       ),
-    );
-  }
+    ),
+  );
+}
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: CommunityPage(),
+  ));
 }

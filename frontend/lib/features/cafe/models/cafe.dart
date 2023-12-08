@@ -1,31 +1,30 @@
 class Cafe {
-  final int cafe_id;
+  final String cafe_id; // Keep it as String if needed
   final String name;
   final String address;
   final String number;
-  final String latitude; // Add this line
-  final String longitude; // Add this line
+  final double latitude; // Change to double
+  final double longitude; // Change to double
 
   Cafe({
     required this.cafe_id,
     required this.name,
     required this.address,
     required this.number,
-    required this.latitude, // Add this line
-    required this.longitude, // Add this line
+    required this.latitude,
+    required this.longitude,
   });
 
   // Existing code...
 
   factory Cafe.fromJson(Map<String, dynamic> json) {
     return Cafe(
-      cafe_id: json['cafe_id'] ?? 0,
-      name: json['name'] ?? '',
-      address: json['address'] ?? '',
-      number: json['number'] ?? '',
-      latitude: json['lat'] ?? 0.0, // Adjust based on your API response
-      longitude: json['lng'] ?? 0.0, // Adjust based on your API response
+      cafe_id: json['cafe_id'].toString() ?? 'N/A', // Keep it as String if needed
+      name: json['name'] ?? 'N/A',
+      address: json['address'] ?? 'N/A',
+      number: json['number'] ?? 'N/A',
+      latitude: json['lat'] != null ? double.tryParse(json['lat'].toString()) ?? 0.0 : 0.0,
+      longitude: json['lng'] != null ? double.tryParse(json['lng'].toString()) ?? 0.0 : 0.0,
     );
   }
 }
-

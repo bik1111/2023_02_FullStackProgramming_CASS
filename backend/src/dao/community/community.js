@@ -1,9 +1,9 @@
 
-export const createMyCommunityDAO = async (connection, title, hashtags) => {
+export const createMyCommunityDAO = async (connection, title, hashtags, img_url) => {
     const createMyCommunityQuery = `
-        INSERT INTO community (title, hashtags, createdAt) VALUES (?, ?, UTC_TIMESTAMP());
+        INSERT INTO community (title, hashtags, community_img, createdAt) VALUES (?, ?, ?, UTC_TIMESTAMP());
     `;
-    const createMyCommunityParams = [title, hashtags];
+    const createMyCommunityParams = [title, hashtags, img_url];
     const [createMyCommunityRows] = await connection.query(createMyCommunityQuery, createMyCommunityParams);
 
     return createMyCommunityRows;
@@ -13,7 +13,7 @@ export const createMyCommunityDAO = async (connection, title, hashtags) => {
 export const getMyCommunityDAO = async (connection) => {
 
     const getMyCommunityQuery = `
-        select community_id, title, hashtags, createdAt
+        select community_id, title, hashtags, createdAt, community_img
         from community
     `;
     const [getMyCommunityRows] = await connection.query(getMyCommunityQuery);

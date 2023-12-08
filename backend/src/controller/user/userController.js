@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 import { createUser, getUser } from '../../service/user/userService.js';
 import { sign } from '../../auth/auth-jwt.js';
 import { redisClient } from '../../util/cache.js';
@@ -9,8 +9,8 @@ export const createNewUser = async (req, res) => {
 try {
     const { username } = req.body;
     let password = req.body.password;
-    const salt = await bcrypt.genSalt(10); // 랜덤한 솔트 값 생성
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const salt = await bcryptjs.genSalt(10); // 랜덤한 솔트 값 생성
+    const hashedPassword = await bcryptjs.hash(password, salt);
     password = hashedPassword;
 
     const newUser = await createUser(username, password);
@@ -47,7 +47,7 @@ export const login = async (req, res) => {
         });
       } else {
         const user = userNameInfo[0];
-        const chk = await bcrypt.compare(password, userNameInfo[0].password);
+        const chk = await bcryptjs.compare(password, userNameInfo[0].password);
 
         if (chk) {
           const token = sign(user);
