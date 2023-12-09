@@ -10,6 +10,6 @@ COPY backend /app/backend
 
 WORKDIR /app/backend
 
-CMD ["node", "app.js"]
+CMD ["node", "./app.js"]
 
 EXPOSE 3000
