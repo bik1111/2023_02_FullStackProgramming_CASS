@@ -7,7 +7,7 @@ on:
 
 # 환경설정
 env:
-  DOCKER_IMAGE: ghcr.io/bik1111/cass:latest
+  DOCKER_IMAGE: ghcr.io/bik1111/cass
   VERSION: ${{ github.sha }}
   NAME: cass
 
