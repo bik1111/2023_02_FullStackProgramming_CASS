@@ -1,14 +1,14 @@
 # 베이스이미지
 FROM node:16-alpine
 
-WORKDIR /src
+WORKDIR /app
 
 #프로젝트 파일 복사
 COPY ["package.json", "package-lock.json", "./"]
 
 RUN npm install --silent
 
-COPY . .
+COPY backend /app/backend
 
 CMD  ["node", "app.js"]
 

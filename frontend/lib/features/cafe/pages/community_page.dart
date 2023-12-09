@@ -45,7 +45,7 @@ class _CommunityPageState extends State<CommunityPage> {
       appBar: AppBar(
         title: Text('Community'),
       ),
-      body: ListView( // Wrap the Column with ListView
+      body: ListView(
         children: [
           Center(
             child: Column(
@@ -62,9 +62,8 @@ class _CommunityPageState extends State<CommunityPage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color.fromARGB(255, 64, 123, 40),
-        onPressed: () async {
+      floatingActionButton: GestureDetector(
+        onTap: () async {
           final createdCommunity = await Navigator.push(
             context,
             MaterialPageRoute(
@@ -96,82 +95,86 @@ class _CommunityPageState extends State<CommunityPage> {
             );
           }
         },
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Color.fromARGB(255, 64, 123, 40),
+          ),
+          padding: EdgeInsets.all(16.0),
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
         ),
       ),
     );
   }
 
-Widget _buildCommunityCard(BuildContext context, Map<String, dynamic> community) {
-  double cardWidth = MediaQuery.of(context).size.width - 16.0; // Adjust margin
+  Widget _buildCommunityCard(BuildContext context, Map<String, dynamic> community) {
+    double cardWidth = MediaQuery.of(context).size.width - 16.0;
 
-  return Container(
-    width: cardWidth,
-    margin: EdgeInsets.symmetric(vertical: 8.0),
-    child: Card(
-      elevation: 2.0,
-      child: Container(
-        width: double.infinity, // Occupy the entire width of the Card
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        child: ListTile(
-          title: Row(
-            children: [
-              if (community['community_img'] != null)
-                Container(
-                  margin: EdgeInsets.only(right: 8.0),
-                  child: Image.network(
-                    community['community_img'],
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      print('Error loading image: $error');
-                      return Text('Error loading image');
-                    },
+    return Container(
+      width: cardWidth,
+      margin: EdgeInsets.symmetric(vertical: 8.0),
+      child: Card(
+        elevation: 2.0,
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: ListTile(
+            title: Row(
+              children: [
+                if (community['community_img'] != null)
+                  Container(
+                    margin: EdgeInsets.only(right: 8.0),
+                    child: Image.network(
+                      community['community_img'],
+                      height: 100,
+                      width: 100,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        print('Error loading image: $error');
+                        return Text('Error loading image');
+                      },
+                    ),
+                  ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${community['title'] ?? 'N/A'}',
+                        style: const TextStyle(
+                          fontFamily: 'montserrat_regular.ttf',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                        ),
+                      ),
+                      Text(
+                        '${community['hashtags'] ?? 'N/A'}',
+                        style: const TextStyle(
+                          fontFamily: 'montserrat_regular.ttf',
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${community['title'] ?? 'N/A'}',
-                      style: const TextStyle(
-                        fontFamily: 'montserrat_regular.ttf',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
-                      ),
-                    ),
-                    Text(
-                      '${community['hashtags'] ?? 'N/A'}',
-                      style: const TextStyle(
-                        fontFamily: 'montserrat_regular.ttf',
-                        fontSize: 16.0,
-                      ),
-                    ),
-                  ],
+              ],
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CommunityDetailPage(communityId: community['community_id']),
                 ),
-              ),
-            ],
+              );
+            },
           ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CommunityDetailPage(communityId: community['community_id']),
-              ),
-            );
-          },
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 }
 
 void main() {
