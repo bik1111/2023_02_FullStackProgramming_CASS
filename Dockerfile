@@ -10,6 +10,6 @@ RUN npm install --silent
 
 COPY backend /app/backend
 
-CMD ["node", "backend/src/app.js"]
+CMD ["node", "app.js"]
 
 EXPOSE 3000
