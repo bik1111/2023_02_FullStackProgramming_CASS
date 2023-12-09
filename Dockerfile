@@ -1,4 +1,3 @@
-# 베이스이미지
 FROM node:16-alpine
 
 WORKDIR /app
@@ -9,6 +8,8 @@ RUN npm install --silent
 
 COPY backend /app/backend
 
-CMD ["node", "backend/app.js"]
+WORKDIR /app/backend
+
+CMD ["node", "app.js"]
 
 EXPOSE 3000
