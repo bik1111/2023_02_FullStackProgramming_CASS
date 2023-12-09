@@ -6,8 +6,6 @@ WORKDIR /src
 #프로젝트 파일 복사
 COPY ["package.json", "package-lock.json", "./"]
 
-COPY .env ./
-
 RUN npm install --silent
 
 COPY . .
