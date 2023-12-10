@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:full_stack_project/features/cafe/api/api_service.dart';
 import 'package:full_stack_project/features/cafe/pages/create_post_page.dart';
@@ -8,8 +10,11 @@ import 'dart:convert';
 
 class CommunityDetailPage extends StatefulWidget {
   final int communityId;
+  final String? communityImage;
 
-  CommunityDetailPage({required this.communityId});
+  CommunityDetailPage({required this.communityId, this.communityImage});
+
+  get communityImageBytes => null;
 
   @override
   _CommunityDetailPageState createState() => _CommunityDetailPageState();
@@ -25,7 +30,6 @@ class _CommunityDetailPageState extends State<CommunityDetailPage> {
     super.initState();
     _fetchCommunityDetails();
   }
-
   Future<void> _fetchCommunityDetails() async {
     final apiUrl = 'http://localhost:3000/api/community/${widget.communityId}';
 
@@ -56,7 +60,7 @@ class _CommunityDetailPageState extends State<CommunityDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-title: Text(posts?.isNotEmpty == true ? posts!.first['community_title'] ?? 'Community Detail' : 'Community Detail'),
+        title: Text(posts?.isNotEmpty == true ? posts!.first['community_title'] ?? 'Community Detail' : 'Community Detail'),
         actions: [
           IconButton(
             icon: Icon(Icons.add),
@@ -66,20 +70,33 @@ title: Text(posts?.isNotEmpty == true ? posts!.first['community_title'] ?? 'Comm
           ),
         ],
       ),
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: posts?.isEmpty ?? true
-                ? _buildEmptyStateWidget()
-                : ListView.builder(
-                    itemCount: posts!.length,
-                    itemBuilder: (context, index) {
-                      final post = posts![index];
-                      return _buildDetailCard(post['content_title'], post['content_detail'], post['content_id']);
-                    },
-                  ),
+   body: Stack(
+  children: [
+    if (widget.communityImage != null)
+      Positioned.fill(
+        child: ColorFiltered(
+          colorFilter: ColorFilter.mode(
+            Colors.black.withOpacity(0.83), // Adjust the opacity as needed
+            BlendMode.dstATop,
           ),
+          child: Image.network(
+            widget.communityImage!,
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: posts?.isEmpty ?? true
+          ? _buildEmptyStateWidget()
+          : ListView.builder(
+              itemCount: posts!.length,
+              itemBuilder: (context, index) {
+                final post = posts![index];
+                return _buildDetailCard(post['content_title'], post['content_detail'], post['content_id']);
+              },
+            ),
+    ),
           Positioned(
             left: 0,
             right: 0,

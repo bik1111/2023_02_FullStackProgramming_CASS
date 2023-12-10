@@ -240,7 +240,7 @@ Future<void> _deleteReview(int reviewId) async {
 
 
 
-  @override
+ @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -327,22 +327,35 @@ Future<void> _deleteReview(int reviewId) async {
                     style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 8.0),
-                  TextField(
-                    controller: commentController,
-                    maxLines: 3,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Write your comment here...',
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(color: Colors.grey),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: TextField(
+                        controller: commentController,
+                        maxLines: 3,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Write your comment here...',
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(height: 16.0),
-                  ElevatedButton(
-                    onPressed: () {
-                      _submitReview();
-                    },
-                    child: Text('Submit'),
-                  ),
-                  SizedBox(height: 20),
+Center(
+  child: ElevatedButton(
+    onPressed: () {
+      _submitReview();
+    },
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      child: Text('Submit'),
+    ),
+  ),
+),
                   Text(
                     'Reviews:',
                     style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
@@ -366,7 +379,6 @@ Future<void> _deleteReview(int reviewId) async {
                               IconButton(
                                 icon: Icon(Icons.delete),
                                 onPressed: () {
-                                  // Show a confirmation dialog before deleting
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -376,13 +388,13 @@ Future<void> _deleteReview(int reviewId) async {
                                         actions: [
                                           TextButton(
                                             onPressed: () {
-                                              Navigator.of(context).pop(); // Close the dialog
+                                              Navigator.of(context).pop();
                                             },
                                             child: Text('Cancel'),
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              Navigator.of(context).pop(); // Close the dialog
+                                              Navigator.of(context).pop();
                                               _deleteReview(review.review_id);
                                             },
                                             child: Text('Delete'),
@@ -408,7 +420,6 @@ Future<void> _deleteReview(int reviewId) async {
     );
   }
 }
-
 
 
 

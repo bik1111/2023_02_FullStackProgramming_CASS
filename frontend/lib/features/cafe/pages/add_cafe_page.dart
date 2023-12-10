@@ -8,9 +8,9 @@ import 'package:provider/provider.dart';
 import '../api/api_service.dart';
 
 class AddCafePage extends StatefulWidget {
-  final String username; // Add this line
+  final String username;
 
-  AddCafePage({Key? key, required this.username}) : super(key: key); // Add this line
+  AddCafePage({Key? key, required this.username}) : super(key: key);
 
   @override
   _AddCafePageState createState() => _AddCafePageState();
@@ -32,16 +32,35 @@ class _AddCafePageState extends State<AddCafePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
-                controller: _cafeNameController,
-                decoration: InputDecoration(
-                  labelText: '카페명을 입력하세요.',
+              Text(
+                '찾고 싶은 카페의 이름을 입력해보세요.',
+                style: TextStyle(
+                  fontFamily: 'montserrat_regular.ttf',
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 16),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: TextField(
+                    controller: _cafeNameController,
+                    decoration: InputDecoration(
+                      hintText: '예: 강남역, 남산',
+                      border: InputBorder.none,
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: 16),
               Center(
                 child: SizedBox(
-                  width: 120.0,
+                  width: 150.0,
                   height: 50.0,
                   child: ElevatedButton(
                     onPressed: () {
@@ -59,32 +78,38 @@ class _AddCafePageState extends State<AddCafePage> {
                                   .toList();
                             });
                           } else {
-                            // Handle cases where 'ok' is false or other conditions
                             print('Error: ${responseData['msg']}');
                           }
                         } else {
-                          // Handle other status codes if needed
                           print('Error: ${response.statusCode}');
                         }
                       });
                     },
-                    child: Text('Search'),
+                    child: Text('카페 찾기'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 33, 120, 36),
-                      foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                      foregroundColor: Colors.white,
                     ),
                   ),
                 ),
               ),
               SizedBox(height: 16),
               _cafeDataList.isNotEmpty
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: _cafeDataList.length,
-                      itemBuilder: (context, index) {
-                        return _buildCafeRowWidget(_cafeDataList[index], context);
-                      },
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '검색 결과',
+                          style: TextStyle(
+                            fontFamily: 'montserrat_regular.ttf',
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 12),
+                        for (var cafe in _cafeDataList)
+                          _buildCafeRowWidget(cafe, context),
+                      ],
                     )
                   : Container(),
             ],
@@ -94,93 +119,95 @@ class _AddCafePageState extends State<AddCafePage> {
     );
   }
 
-Widget _buildCafeRowWidget(Map<String, dynamic> cafe, BuildContext context) {
-  return Container(
-    child: Card(
-      elevation: 2.0,
-      color: Color.fromARGB(255, 64, 123, 40),
-      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      child: ListTile(
-        title: Text(
-          cafe['name'] ?? 'N/A',
-          style: TextStyle(
-            fontFamily: 'montserrat_regular.ttf',
-            fontWeight: FontWeight.bold,
-            fontSize: 16.0,
-            color: Colors.white,
+  Widget _buildCafeRowWidget(Map<String, dynamic> cafe, BuildContext context) {
+    return Container(
+      child: Card(
+        elevation: 2.0,
+        color: Color.fromARGB(255, 64, 123, 40),
+        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        child: ListTile(
+          title: Text(
+            cafe['name'] ?? 'N/A',
+            style: TextStyle(
+              fontFamily: 'montserrat_regular.ttf',
+              fontWeight: FontWeight.bold,
+              fontSize: 16.0,
+              color: Colors.white,
+            ),
           ),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '주소: ${cafe['address'] ?? 'N/A'}',
-              style: TextStyle(
-                fontFamily: 'montserrat_regular.ttf',
-                color: Colors.white,
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '주소: ${cafe['address'] ?? 'N/A'}',
+                style: TextStyle(
+                  fontFamily: 'montserrat_regular.ttf',
+                  color: Colors.white,
+                ),
               ),
-            ),
-            Text(
-              '전화번호: ${cafe['number'] ?? 'N/A'}',
-              style: TextStyle(
-                fontFamily: 'montserrat_regular.ttf',
-                color: Colors.white,
+              Text(
+                '전화번호: ${cafe['number'] ?? 'N/A'}',
+                style: TextStyle(
+                  fontFamily: 'montserrat_regular.ttf',
+                  color: Colors.white,
+                ),
               ),
+            ],
+          ),
+          trailing: ElevatedButton(
+            onPressed: () {
+              _addToCafeList(cafe);
+            },
+            child: Text('Add'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromARGB(255, 255, 255, 255),
+              foregroundColor: const Color.fromARGB(255, 64, 123, 40),
             ),
-          ],
-        ),
-        trailing: ElevatedButton(
-          onPressed: () {
-            _addToCafeList(cafe);
-          },
-          child: Text('Add'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color.fromARGB(255, 255, 255, 255),
-            foregroundColor: const Color.fromARGB(255, 64, 123, 40),
           ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
+  void _addToCafeList(Map<String, dynamic> cafe) {
+    final cafeList = Provider.of<CafeList>(context, listen: false);
 
-void _addToCafeList(Map<String, dynamic> cafe) {
-  final cafeList = Provider.of<CafeList>(context, listen: false);
+    double latitude = cafe['latitude'] != null
+        ? double.tryParse(cafe['latitude']) ?? 0.0
+        : 0.0;
+    double longitude = cafe['longitude'] != null
+        ? double.tryParse(cafe['longitude']) ?? 0.0
+        : 0.0;
 
-  // Convert latitude and longitude to double
-  double latitude = cafe['latitude'] != null ? double.tryParse(cafe['latitude']) ?? 0.0 : 0.0;
-  double longitude = cafe['longitude'] != null ? double.tryParse(cafe['longitude']) ?? 0.0 : 0.0;
+    cafeList.addCafe(Cafe(
+      cafe_id: cafe['cafe_id'] ?? 'N/A',
+      name: cafe['name'] ?? 'N/A',
+      address: cafe['address'] ?? 'N/A',
+      number: cafe['number'] ?? 'N/A',
+      latitude: latitude,
+      longitude: longitude,
+    ));
 
-  // 선택한 카페를 CafeList에 추가
-  cafeList.addCafe(Cafe(
-    cafe_id: cafe['cafe_id'] ?? 'N/A',
-    name: cafe['name'] ?? 'N/A',
-    address: cafe['address'] ?? 'N/A',
-    number: cafe['number'] ?? 'N/A',
-    latitude: latitude,
-    longitude: longitude,
-  ));
+    _navigateToHome(context, cafe, widget.username);
+  }
 
-  // 선택한 카페 정보를 HomePage로 전달
-_navigateToHome(context, cafe, widget.username);
-}
-
-
-void _navigateToHome(BuildContext context, Map<String, dynamic> _cafeDataList, String username) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => HomePage(cafeData: _cafeDataList, showAddButton: false, username: username),
-    ),
-  ).then((_) {
-    Navigator.pop(context);
-  });
-}
-
+  void _navigateToHome(
+      BuildContext context, Map<String, dynamic> _cafeDataList, String username) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HomePage(
+          cafeData: _cafeDataList,
+          showAddButton: false,
+          username: username,
+        ),
+      ),
+    ).then((_) {
+      Navigator.pop(context);
+    });
+  }
 
   Map<String, dynamic> _cleanCafeData(Map<String, dynamic> cafe) {
-    // Handle null or missing fields here
     return {
       'name': cafe['name'] ?? 'N/A',
       'address': cafe['address'] ?? 'N/A',
@@ -188,34 +215,23 @@ void _navigateToHome(BuildContext context, Map<String, dynamic> _cafeDataList, S
     };
   }
 
-Future<http.Response> _getCafeData() async {
-  final cafeName = _cafeNameController.text;
+  Future<http.Response> _getCafeData() async {
+    final cafeName = _cafeNameController.text;
 
-  if (cafeName.isNotEmpty) {
-    final encodedCafeName = Uri.encodeComponent(cafeName);
-    print('Encoded Cafe Name: $encodedCafeName');
+    if (cafeName.isNotEmpty) {
+      final encodedCafeName = Uri.encodeComponent(cafeName);
+      final uri = Uri.parse('http://localhost:3000/api/cafe/search?cafeName=$encodedCafeName');
+      final cafeApi = CafeApi(uri.toString());
 
-    final uri = Uri.parse('http://localhost:3000/api/cafe/search?cafeName=$encodedCafeName');
-    print('Final URL: $uri');
-
-    final cafeApi = CafeApi(uri.toString());
-
-    try {
-      final response = await cafeApi.getHttpResponse();
-
-      // Format the JSON response for better readability
-      final encoder = JsonEncoder.withIndent('  '); // Use two spaces for indentation
-      final formattedJson = encoder.convert(jsonDecode(response.body));
-      print('Formatted JSON:\n$formattedJson');
-
-      return response;
-    } catch (e) {
-      print('Error during HTTP request: $e');
-      throw e;
+      try {
+        final response = await cafeApi.getHttpResponse();
+        return response;
+      } catch (e) {
+        print('Error during HTTP request: $e');
+        throw e;
+      }
+    } else {
+      return http.Response('Cafe name is empty', 400);
     }
-  } else {
-    return http.Response('Cafe name is empty', 400);
   }
 }
-}
-

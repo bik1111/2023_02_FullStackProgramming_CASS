@@ -103,7 +103,11 @@ class _CommentSectionState extends State<CommentSection> {
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                           child: ListTile(
-                            subtitle: Text(comment.content),
+                            contentPadding: EdgeInsets.all(16.0),
+                            subtitle: Text(
+                              comment.content,
+                              style: TextStyle(fontSize: 16.0),
+                            ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -139,14 +143,23 @@ class _CommentSectionState extends State<CommentSection> {
                     controller: commentController,
                     decoration: InputDecoration(
                       hintText: 'Add a comment...',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
                     ),
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    _addComment();
-                  },
-                  icon: Icon(Icons.send),
+                SizedBox(width: 10.0),
+                Material(
+                  shape: CircleBorder(),
+                  clipBehavior: Clip.hardEdge,
+                  color: Colors.blue,
+                  child: IconButton(
+                    onPressed: () {
+                      _addComment();
+                    },
+                    icon: Icon(Icons.send, color: Colors.white),
+                  ),
                 ),
               ],
             ),
@@ -228,36 +241,32 @@ class _CommentSectionState extends State<CommentSection> {
     }
   }
 
-  // Helper method to generate a random comment ID
   int _generateRandomCommentId() {
     Random random = Random();
     return random.nextInt(1000); // Adjust the range as needed
   }
 
-void _editComment(Comment comment) async {
-  await Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => EditCommentScreen(
-        comment: comment,
-        onEdit: _updateCommentInList,
+  void _editComment(Comment comment) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditCommentScreen(
+          comment: comment,
+          onEdit: _updateCommentInList,
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-void _updateCommentInList(String editedText, Comment comment) {
-  setState(() {
-    int index = comments.indexWhere((element) => element.commentId == comment.commentId);
+  void _updateCommentInList(String editedText, Comment comment) {
+    setState(() {
+      int index = comments.indexWhere((element) => element.commentId == comment.commentId);
 
-    if (index != -1) {
-      comments[index].content = editedText;
-    }
-  });
-}
-
-
-
+      if (index != -1) {
+        comments[index].content = editedText;
+      }
+    });
+  }
 
   void _deleteComment(Comment comment) async {
     try {
@@ -279,13 +288,5 @@ void _updateCommentInList(String editedText, Comment comment) {
     } catch (e) {
       print('Error during HTTP request: $e');
     }
-  }
-
-  String _generateRandomUserId() {
-    Random random = Random();
-    String letters = 'abcdefghijklmnopqrstuvwxyz';
-    String randomLetter = letters[random.nextInt(letters.length)];
-    String randomNumber = (random.nextInt(10)).toString();
-    return 'user_$randomLetter$randomNumber';
   }
 }

@@ -18,7 +18,7 @@ class _YourWritePostScreenState extends State<YourWritePostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Write a Post'),
+        title: Text('게시글 작성하기'),
         backgroundColor: Colors.green, // Change the app bar color here
       ),
       body: Padding(
@@ -27,7 +27,7 @@ class _YourWritePostScreenState extends State<YourWritePostScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Title',
+              '글 제목',
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
@@ -43,7 +43,7 @@ class _YourWritePostScreenState extends State<YourWritePostScreen> {
             ),
             SizedBox(height: 16.0),
             Text(
-              'Content',
+              '내용',
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
@@ -75,7 +75,7 @@ class _YourWritePostScreenState extends State<YourWritePostScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Text(
-                    'Submit',
+                    '확인',
                     style: TextStyle(fontSize: 18.0),
                   ),
                 ),

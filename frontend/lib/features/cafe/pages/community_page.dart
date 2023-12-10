@@ -192,14 +192,18 @@ Future<void> _deleteCommunity(int communityId) async {
                 foregroundColor: Colors.red,
               ),
             ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CommunityDetailPage(communityId: community['community_id']),
-                ),
-              );
-            },
+onTap: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => CommunityDetailPage(
+        communityId: community['community_id'],
+        communityImage: community['community_img'], // Pass image URL
+      ),
+    ),
+  );
+},
+
           ),
         ),
       ),
