@@ -483,3 +483,31 @@ class DeleteComment {
     }
   }
 }
+
+class DeleteCommunity {
+  late String _baseUrl;
+
+  DeleteCommunity(this._baseUrl);
+
+  Future<http.Response> deleteHttpResponse({
+    required int communityId,
+  }) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('http://$_baseUrl/api/delete/community/$communityId'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        return response;
+      } else {
+        print('HTTP request failed with status: ${response.statusCode}');
+        throw Exception(
+            'Failed to delete community. Server returned status ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error during HTTP request: $e');
+      throw e;
+    }
+  }
+}

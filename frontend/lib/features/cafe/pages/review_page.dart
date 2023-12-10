@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:full_stack_project/features/cafe/pages/create_reveiw.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:full_stack_project/features/cafe/models/cafe.dart';
-import 'package:full_stack_project/features/cafe/pages/create_reveiw.dart';
 
 class ReviewPage extends StatefulWidget {
   @override
@@ -58,7 +58,7 @@ class _ReviewPageState extends State<ReviewPage> {
             child: TextField(
               onChanged: _filterAndSortCafeList,
               decoration: InputDecoration(
-                labelText: '원하는 카페를 검색해 보세요.',
+                labelText: 'Search for your favorite cafe',
                 prefixIcon: Icon(Icons.search),
               ),
             ),
@@ -92,15 +92,27 @@ class _ReviewPageState extends State<ReviewPage> {
             Text(
               cafe.name,
               style: TextStyle(
-                fontSize: 18.0,
+                fontSize: 20.0,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 27, 110, 30),
+                color: Colors.green,
               ),
             ),
             SizedBox(height: 8.0),
-            Text('Address: ${cafe.address}'),
+            Text(
+              'Address: ${cafe.address}',
+              style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.grey[800],
+              ),
+            ),
             SizedBox(height: 4.0),
-            Text('Number: ${cafe.number}'),
+            Text(
+              'Number: ${cafe.number}',
+              style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.grey[800],
+              ),
+            ),
             SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
@@ -111,7 +123,11 @@ class _ReviewPageState extends State<ReviewPage> {
                   ),
                 );
               },
-              child: Text('리뷰 남기기'),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+                onPrimary: Colors.white,
+              ),
+              child: Text('Leave a Review'),
             ),
           ],
         ),

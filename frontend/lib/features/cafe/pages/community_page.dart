@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:full_stack_project/features/cafe/api/api_service.dart';
 import 'package:full_stack_project/features/cafe/pages/community_detail_page.dart';
 import 'package:full_stack_project/features/cafe/pages/create_community_page.dart';
 import 'package:http/http.dart' as http;
@@ -38,6 +39,25 @@ class _CommunityPageState extends State<CommunityPage> {
       print('Exception during GET request: $e');
     }
   }
+Future<void> _deleteCommunity(int communityId) async {
+  try {
+    final deleteCommunity = DeleteCommunity('localhost:3000'); // Replace with your API server URL
+    final response = await deleteCommunity.deleteHttpResponse(
+      communityId: communityId, // Ensure communityId is converted to String
+    );
+
+    if (response.statusCode == 200) {
+      print('Community deleted successfully!');
+      await _fetchCommunities(); // Fetch communities again after deletion
+    } else {
+      print('Failed to delete community. Status code: ${response.statusCode}');
+      // Handle error as needed
+    }
+  } catch (e) {
+    print('Error during community deletion: $e');
+    // Handle error as needed
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -161,6 +181,16 @@ class _CommunityPageState extends State<CommunityPage> {
                   ),
                 ),
               ],
+            ),
+            trailing: ElevatedButton(
+              onPressed: () {
+                _deleteCommunity(community['community_id']);
+              },
+              child: Text('Delete'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                foregroundColor: Colors.red,
+              ),
             ),
             onTap: () {
               Navigator.push(

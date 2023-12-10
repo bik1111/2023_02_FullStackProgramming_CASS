@@ -1,5 +1,5 @@
 import express from 'express';
-import { createCommunity, getCommunity, getCommunityInfo, createPost, modfiyPost, deletePost } from '../../controller/community/communityController.js';
+import { createCommunity, getCommunity, getCommunityInfo, createPost, modfiyPost, deletePost, deletCommunity } from '../../controller/community/communityController.js';
 import imgUpload from "../../util/aws-s3.js";
 
 const communityRouter = express.Router();
@@ -402,5 +402,8 @@ communityRouter.route('/api/modify/post/:id').put(modfiyPost);
  *                 message: "게시물 삭제 중 에러가 발생했습니다."
  */
 communityRouter.route('/api/delete/post/:id').delete(deletePost);
+
+
+communityRouter.route('/api/delete/community/:communityId').delete(deletCommunity);
 
 export default communityRouter;

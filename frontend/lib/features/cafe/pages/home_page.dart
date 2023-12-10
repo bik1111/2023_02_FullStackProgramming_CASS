@@ -30,68 +30,77 @@ class _HomePageState extends State<HomePage> {
       body: IndexedStack(
         index: _currentIndex,
         children: [
-          Column(
-            children: [
-              Expanded(
-                child: ProfileWidget(username: widget.username),
+          Container(
+            // 배경 이미지 추가 부분
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/jpg/background_home_image.jpg'), // 배경 이미지 경로
+                fit: BoxFit.cover,
               ),
-              Expanded(
-                child: _currentIndex == 0
-                    ? Consumer<CafeList>(
-                        builder: (context, cafeList, child) {
-                          return cafeList.cafes.isNotEmpty
-                              ? ListView.builder(
-                                  itemCount: cafeList.cafes.length,
-                                  itemBuilder: (context, index) {
-                                    return _buildCafeRowWidget(
-                                      cafeList.cafes[index],
-                                      context,
-                                      onDelete: () {
-                                        _deleteCafe(cafeList.cafes[index]);
-                                      },
-                                      onView: () {
-                                        _viewCafe(cafeList.cafes[index]);
-                                      },
-                                    );
-                                  },
-                                )
-                              : Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        '등록된 카페가 없습니다.',
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey,
+              color: Colors.black.withOpacity(0.3), // 검은색 배경에 0.7의 투명도 추가
+            ),
+            child: Column(
+              children: [
+                Expanded(
+                  child: ProfileWidget(username: widget.username),
+                ),
+                Expanded(
+                  child: _currentIndex == 0
+                      ? Consumer<CafeList>(
+                          builder: (context, cafeList, child) {
+                            return cafeList.cafes.isNotEmpty
+                                ? ListView.builder(
+                                    itemCount: cafeList.cafes.length,
+                                    itemBuilder: (context, index) {
+                                      return _buildCafeRowWidget(
+                                        cafeList.cafes[index],
+                                        context,
+                                        onDelete: () {
+                                          _deleteCafe(cafeList.cafes[index]);
+                                        },
+                                        onView: () {
+                                          _viewCafe(cafeList.cafes[index]);
+                                        },
+                                      );
+                                    },
+                                  )
+                                : Center(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          '등록된 카페가 없습니다.',
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.grey,
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(height: 8),
-ElevatedButton(
-  onPressed: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AddCafePage(username: widget.username), // Add username parameter
-      ),
-    );
-  },
-  style: ElevatedButton.styleFrom(
-    backgroundColor: const Color.fromARGB(255, 37, 118, 39),
-    foregroundColor: Colors.white,
-  ),
-  child: Text('나만의 카페 추가하기'),
-),
-
-                                    ],
-                                  ),
-                                );
-                        },
-                      )
-                    : Container(),
-              ),
-            ],
+                                        SizedBox(height: 8),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => AddCafePage(username: widget.username),
+                                              ),
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: const Color.fromARGB(255, 37, 118, 39),
+                                            foregroundColor: Colors.white,
+                                          ),
+                                          child: Text('나만의 카페 추가하기'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                          },
+                        )
+                      : Container(),
+                ),
+              ],
+            ),
           ),
           ReviewPage(),
           CommunityPage(),

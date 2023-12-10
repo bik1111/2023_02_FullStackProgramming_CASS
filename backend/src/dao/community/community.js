@@ -63,3 +63,13 @@ export const deletePostDAO = async (connection, id) => {
 
     return deletePostRows;
 }
+
+export const deleteCommunityDAO = async (connection, communityId) => {
+    const deleteCommunityQuery = `
+        DELETE FROM community WHERE community_id = ?;
+    `;
+    const deleteCommunityParams = [communityId];
+    const [deleteCommunityRows] = await connection.query(deleteCommunityQuery, deleteCommunityParams);
+
+    return deleteCommunityRows;
+}

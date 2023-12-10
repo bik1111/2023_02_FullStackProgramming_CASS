@@ -1,4 +1,4 @@
-import { createMyCommunity, getMyCommunity, getMyCommunityBoardInfo, createPostInCommunity, modifyPost, deleteCommunityPost } from '../../service/community/communityService.js';
+import { createMyCommunity, getMyCommunity, getMyCommunityBoardInfo, createPostInCommunity, modifyPost, deleteCommunityPost, deleteCommunity } from '../../service/community/communityService.js';
 
 export const createCommunity = async (req, res) => {
 try {
@@ -129,6 +129,27 @@ try {
     return res.status(500).json({
         ok: false,
         msg: "게시글 삭제 중 에러가 발생했습니다.",
+        error
+    })
+}
+}
+
+export const deletCommunity = async (req, res) => {
+try {
+    const { communityId } = req.params;
+
+    const deleteCommunityResult = await deleteCommunity(communityId);
+
+    return res.status(200).json({
+        ok: true,
+        msg: "커뮤니티 삭제 성공",
+        data: deleteCommunityResult
+    })
+} catch (error) {
+    console.log(error);
+    return res.status(500).json({
+        ok: false,
+        msg: "커뮤니티 삭제 중 에러가 발생했습니다.",
         error
     })
 }

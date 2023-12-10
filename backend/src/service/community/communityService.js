@@ -1,5 +1,5 @@
 import pool from "../../config/database.js";
-import { createMyCommunityDAO, getMyCommunityDAO, getMyCommunityBoardInfoDAO, createPostInCommunityDAO, modifyPostDAO, deletePostDAO } from "../../dao/community/community.js";
+import { createMyCommunityDAO, getMyCommunityDAO, getMyCommunityBoardInfoDAO, createPostInCommunityDAO, modifyPostDAO, deletePostDAO, deleteCommunityDAO } from "../../dao/community/community.js";
 
 export const createMyCommunity = async (title, hashtags, img_url) => {
 
@@ -54,5 +54,15 @@ export const deleteCommunityPost = async (id) => {
     connection.release();
 
     return deletePostResult;
+
+}
+
+
+export const deleteCommunity = async (communityId) => {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const deleteCommunityResult = await deleteCommunityDAO(connection, communityId);
+    connection.release();
+
+    return deleteCommunityResult;
 
 }

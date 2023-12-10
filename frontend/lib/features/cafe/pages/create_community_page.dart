@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:file_selector/file_selector.dart';
+import 'package:full_stack_project/features/cafe/pages/community_page.dart';
 import 'package:http/http.dart' as http;
 
 class CreateCommunityPage extends StatefulWidget {
@@ -79,7 +80,7 @@ Container makeFilePicker() {
             ],
           ),
         ),
-        Text("(*.jpg, *.jpeg, *.png)", style: TextStyle(color: _selectedImageBytes != null ? Colors.green : Colors.grey[400]!),),
+        Text("(*.jpg, *.jpeg, *.png, *gif)", style: TextStyle(color: _selectedImageBytes != null ? Colors.green : Colors.grey[400]!),),
         const SizedBox(height: 10,),
         _selectedImageBytes != null
             ? Image.memory(
@@ -101,7 +102,7 @@ Future<void> _pickImage() async {
   try {
     final XTypeGroup typeGroup = XTypeGroup(
       label: 'images',
-      extensions: ['jpg', 'jpeg', 'png'],
+      extensions: ['jpg', 'jpeg', 'png', 'gif'], // Include 'gif' extension
     );
 
     final XFile? pickedImage = await openFile(acceptedTypeGroups: [typeGroup]);
@@ -149,6 +150,11 @@ Future<void> _createCommunity() async {
 
       if (response.statusCode == 200) {
         widget.onCommunityCreated?.call();
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => CommunityPage(),
+          ),
+        );
         showDialog(
           context: context,
           builder: (BuildContext context) {

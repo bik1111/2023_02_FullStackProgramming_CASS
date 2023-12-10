@@ -94,45 +94,56 @@ class _AddCafePageState extends State<AddCafePage> {
     );
   }
 
-  Widget _buildCafeRowWidget(Map<String, dynamic> cafe, BuildContext context) {
-    return Container(
-      child: Card(
-        elevation: 2.0,
-        color: Color.fromARGB(255, 64, 123, 40),
-        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-        child: ListTile(
-          title: Text(
-            cafe['name'] ?? 'N/A',
-            style: TextStyle(fontFamily: 'montserrat_regular.ttf', fontWeight: FontWeight.bold),
+Widget _buildCafeRowWidget(Map<String, dynamic> cafe, BuildContext context) {
+  return Container(
+    child: Card(
+      elevation: 2.0,
+      color: Color.fromARGB(255, 64, 123, 40),
+      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      child: ListTile(
+        title: Text(
+          cafe['name'] ?? 'N/A',
+          style: TextStyle(
+            fontFamily: 'montserrat_regular.ttf',
+            fontWeight: FontWeight.bold,
+            fontSize: 16.0,
+            color: Colors.white,
           ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '주소: ${cafe['address'] ?? 'N/A'}',
-                style: TextStyle(fontFamily: 'montserrat_regular.ttf', color: Colors.white),
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '주소: ${cafe['address'] ?? 'N/A'}',
+              style: TextStyle(
+                fontFamily: 'montserrat_regular.ttf',
+                color: Colors.white,
               ),
-              Text(
-                '전화번호: ${cafe['number'] ?? 'N/A'}',
-                style: TextStyle(fontFamily: 'montserrat_regular.ttf', color: Colors.white),
-              ),
-            ],
-          ),
-          trailing: ElevatedButton(
-            onPressed: () {
-              _addToCafeList(cafe); // 새로운 콜백 호출
-            },
-
-            child: Text('Add'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromARGB(255, 255, 255, 255),
-              foregroundColor: const Color.fromARGB(255, 64, 123, 40),
             ),
+            Text(
+              '전화번호: ${cafe['number'] ?? 'N/A'}',
+              style: TextStyle(
+                fontFamily: 'montserrat_regular.ttf',
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+        trailing: ElevatedButton(
+          onPressed: () {
+            _addToCafeList(cafe);
+          },
+          child: Text('Add'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color.fromARGB(255, 255, 255, 255),
+            foregroundColor: const Color.fromARGB(255, 64, 123, 40),
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
 
 void _addToCafeList(Map<String, dynamic> cafe) {
   final cafeList = Provider.of<CafeList>(context, listen: false);
