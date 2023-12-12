@@ -10,7 +10,5 @@ const config = {
     database: `${process.env.DB_NAME}`,
 };
 
-
 const pool = mysql.createPool(config);
-
 export default pool

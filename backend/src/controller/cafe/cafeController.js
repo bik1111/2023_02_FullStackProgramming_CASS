@@ -1,4 +1,5 @@
 import { getCafe, addMyFavoriteCafeInfo, getAllCafeInfo } from '../../service/cafe/cafeService.js';
+import { pagination } from '../../util/paging.js';
 
 
 export const getCafeByCafeName =  async (req, res) => {
@@ -55,6 +56,28 @@ try {
         ok: true,
         msg: "카페 정보 조회 성공",
         data: getAllCafeInfoResult
+    })
+} catch (error) {
+    console.log(error);
+    return res.status(500).json({
+        ok: false,
+        msg: "카페 정보 조회 중 에러가 발생했습니다.",
+        error
+    })
+}
+}
+
+export const getAllCafeInformationWithPaging = async (req, res) => {
+try {
+    const getAllCafeInfoResult = await getAllCafeInfo();
+    console.log(getAllCafeInfoResult);
+    const { page } = req.params;
+    const getAllCafeInfoResultWithPaging = await pagination(getAllCafeInfoResult, page, 10 ,10);
+
+    return res.status(200).json({
+        ok: true,
+        msg: "카페 정보 조회 성공",
+        data: getAllCafeInfoResultWithPaging
     })
 } catch (error) {
     console.log(error);
