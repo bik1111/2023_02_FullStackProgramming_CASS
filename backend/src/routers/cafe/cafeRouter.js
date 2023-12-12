@@ -188,6 +188,105 @@ cafeRouter.route('/api/cafe/add').post(addMyFavoriteCafe);
  */
 cafeRouter.route('/api/cafe/').get(getAllCafeInformation)
 
-cafeRouter.route('/api/cafe/:page/').get(getAllCafeInformationWithPaging)
+
+
+/**
+ * @swagger
+ * /api/cafe/{page}:
+ *   get:
+ *     tags: [Cafe API]
+ *     summary: 모든 카페 정보 조회 (페이징)
+ *     description: 페이징을 적용하여 모든 카페의 정보를 조회합니다.
+ *     parameters:
+ *       - in: path
+ *         name: page
+ *         required: true
+ *         description: 페이지 번호
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *     responses:
+ *       '200':
+ *         description: 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 ok:
+ *                   type: boolean
+ *                 msg:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     startPage:
+ *                       type: integer
+ *                     endPage:
+ *                       type: integer
+ *                     totalPage:
+ *                       type: integer
+ *                     currPage:
+ *                       type: string
+ *                     myresult:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           cafe_id:
+ *                             type: integer
+ *                           name:
+ *                             type: string
+ *                           address:
+ *                             type: string
+ *                           number:
+ *                             type: string
+ *                           lat:
+ *                             type: string
+ *                           lng:
+ *                             type: string
+ *             example:
+ *               ok: true
+ *               msg: "카페 정보 조회 성공"
+ *               data:
+ *                 startPage: 1
+ *                 endPage: 10
+ *                 totalPage: 61
+ *                 currPage: "1"
+ *                 myresult:
+ *                   - cafe_id: 1
+ *                     name: "역삼아레나빌딩"
+ *                     address: "서울특별시 강남구 언주로 425 (역삼동)1522-3232"
+ *                     number: "1522-3232"
+ *                     lat: "37.501087"
+ *                     lng: "127.043069"
+ *                   - cafe_id: 2
+ *                     name: "논현역사거리"
+ *                     address: "서울특별시 강남구 강남대로 538 (논현동)1522-3232"
+ *                     number: "1522-3232"
+ *                     lat: "37.510178"
+ *                     lng: "127.022223"
+ *                   # ... (additional cafe entries)
+ *       '500':
+ *         description: 서버 에러
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 ok:
+ *                   type: boolean
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *             example:
+ *               ok: false
+ *               error:
+ *                 message: "카페 정보 조회 중 에러가 발생했습니다."
+ */
+cafeRouter.route('/api/cafe/:page/').get(getAllCafeInformationWithPaging);
+
 
 export default cafeRouter;

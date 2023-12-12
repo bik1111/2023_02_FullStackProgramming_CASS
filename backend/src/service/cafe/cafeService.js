@@ -26,3 +26,4 @@ export const getAllCafeInfo = async () => {
 
     return getAllCafeInfoRes;
 }
+

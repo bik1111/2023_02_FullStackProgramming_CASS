@@ -17,6 +17,13 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use(cors({
+  origin: "*",
+  credentials: true,
+  optionsSuccessStatus: 200,
+}));
+
+
 app.use('/', crawlingRouter);
 app.use('/', userRouter);
 app.use('/', cafeRouter);
@@ -24,11 +31,6 @@ app.use('/', communityRouter);
 app.use('/', reviewRouter);
 app.use('/', commentRouter);
 
-app.use(cors({
-  origin: "*",
-  credentials: true,
-  optionsSuccessStatus: 200,
-}));
 
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
