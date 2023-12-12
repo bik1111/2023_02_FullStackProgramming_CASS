@@ -13,7 +13,6 @@ RUN npm install --silent
 # Copy the entire project to the working directory
 COPY . .
 
-# Expose the port your app runs on
 EXPOSE 3000
 
 WORKDIR /app/backend
