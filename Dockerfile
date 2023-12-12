@@ -16,4 +16,7 @@ COPY . .
 # Expose the port your app runs on
 EXPOSE 3000
 
+WORKDIR /app/backend
+
+
 CMD ["node", "app.js"]

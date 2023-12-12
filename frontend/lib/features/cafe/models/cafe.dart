@@ -21,8 +21,8 @@ class Cafe {
     return Cafe(
       cafe_id: json['cafe_id'].toString() ?? 'N/A', // Keep it as String if needed
       name: json['name'] ?? 'N/A',
-      address: json['address'] ?? 'N/A',
-      number: json['number'] ?? 'N/A',
+      address: json['address'] as String ?? 'N/A',
+      number: json['number'].toString() ?? 'N/A',
       latitude: json['lat'] != null ? double.tryParse(json['lat'].toString()) ?? 0.0 : 0.0,
       longitude: json['lng'] != null ? double.tryParse(json['lng'].toString()) ?? 0.0 : 0.0,
     );

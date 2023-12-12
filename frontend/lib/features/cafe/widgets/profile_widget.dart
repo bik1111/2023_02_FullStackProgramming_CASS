@@ -20,11 +20,10 @@ class ProfileWidget extends StatelessWidget {
           CircleAvatar(
             radius: 50,
             backgroundColor: Colors.grey, // Set a background color for the CircleAvatar
-            child: SvgPicture.asset(
+            child: Image.asset(
               'assets/jpg/profile.jpg',
-              height: 100, // Adjust the height as needed
-              width: 100, // Adjust the width as needed
-            ),
+              width: 100,
+              ),
           ),
           SizedBox(height: 8),
           Text(

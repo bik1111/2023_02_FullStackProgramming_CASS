@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:full_stack_project/features/cafe/api/api_service.dart';
-import 'package:full_stack_project/features/cafe/pages/community_detail_page.dart';
-import 'package:full_stack_project/features/cafe/pages/create_community_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:full_stack_project/features/cafe/pages/community/community_detail_page.dart';
+import 'package:full_stack_project/features/cafe/pages/create_community_page.dart';
 
 class CommunityPage extends StatefulWidget {
   @override
@@ -12,6 +11,8 @@ class CommunityPage extends StatefulWidget {
 
 class _CommunityPageState extends State<CommunityPage> {
   List<Map<String, dynamic>> communities = [];
+  TextEditingController _searchController = TextEditingController();
+  String _searchTerm = '';
 
   @override
   void initState() {
@@ -39,31 +40,29 @@ class _CommunityPageState extends State<CommunityPage> {
       print('Exception during GET request: $e');
     }
   }
-Future<void> _deleteCommunity(int communityId) async {
-  try {
-    final deleteCommunity = DeleteCommunity('localhost:3000'); // Replace with your API server URL
-    final response = await deleteCommunity.deleteHttpResponse(
-      communityId: communityId, // Ensure communityId is converted to String
-    );
 
-    if (response.statusCode == 200) {
-      print('Community deleted successfully!');
-      await _fetchCommunities(); // Fetch communities again after deletion
-    } else {
-      print('Failed to delete community. Status code: ${response.statusCode}');
-      // Handle error as needed
-    }
-  } catch (e) {
-    print('Error during community deletion: $e');
-    // Handle error as needed
+  void _searchCommunities() {
+    setState(() {
+      _searchTerm = _searchController.text.toLowerCase();
+    });
   }
-}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Community'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: CommunitySearchDelegate(communities),
+              );
+            },
+          ),
+        ],
       ),
       body: ListView(
         children: [
@@ -71,7 +70,19 @@ Future<void> _deleteCommunity(int communityId) async {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                for (var community in communities) _buildCommunityCard(context, community),
+                TextField(
+                  controller: _searchController,
+                  onChanged: (value) => _searchCommunities(),
+                  decoration: InputDecoration(
+                    hintText: 'Search by Community Title',
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+                  ),
+                ),
+                for (var community in communities.where((community) =>
+                    community['title']
+                        ?.toLowerCase()
+                        .contains(_searchTerm) ?? false))
+                  _buildCommunityCard(context, community),
                 if (communities.isEmpty)
                   Text(
                     'No communities yet.',
@@ -192,27 +203,87 @@ Future<void> _deleteCommunity(int communityId) async {
                 foregroundColor: Colors.red,
               ),
             ),
-onTap: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => CommunityDetailPage(
-        communityId: community['community_id'],
-        communityImage: community['community_img'], // Pass image URL
-      ),
-    ),
-  );
-},
-
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CommunityDetailPage(
+                    communityId: community['community_id'],
+                    communityImage: community['community_img'],
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),
     );
   }
+
+  Future<void> _deleteCommunity(int communityId) async {
+    // ... (existing delete community logic)
+  }
+
+  void main() {
+    runApp(MaterialApp(
+      home: CommunityPage(),
+    ));
+  }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: CommunityPage(),
-  ));
+class CommunitySearchDelegate extends SearchDelegate {
+  final List<Map<String, dynamic>> communities;
+
+  CommunitySearchDelegate(this.communities);
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    final filteredCommunities = communities.where((community) =>
+        community['title']?.toLowerCase().contains(query.toLowerCase()) ?? false);
+
+    return _buildCommunityList(filteredCommunities.toList());
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final suggestedCommunities = communities.where((community) =>
+        community['title']?.toLowerCase().contains(query.toLowerCase()) ?? false);
+
+    return _buildCommunityList(suggestedCommunities.toList());
+  }
+
+  Widget _buildCommunityList(List<Map<String, dynamic>> communityList) {
+    return ListView(
+      children: communityList.map((community) {
+        return ListTile(
+          title: Text(community['title'] ?? 'N/A'),
+          onTap: () {
+            // Handle tapping on a suggestion if needed
+          },
+        );
+      }).toList(),
+    );
+  }
 }

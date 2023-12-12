@@ -59,7 +59,6 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - assets/profile_picture.jpg
     - assets/svg/home.svg
     - assets/svg/coffee.svg
     - assets/svg/community.svg

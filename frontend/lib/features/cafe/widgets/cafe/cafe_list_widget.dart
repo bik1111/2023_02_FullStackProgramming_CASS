@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/cafe_list.dart';
+import '../../models/cafe_list.dart';
 import 'cafe_item_widget.dart';
 
 class CafeListWidget extends StatelessWidget {
@@ -38,3 +38,5 @@ class CafeListWidget extends StatelessWidget {
     );
   }
 }
+
+

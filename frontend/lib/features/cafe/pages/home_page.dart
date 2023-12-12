@@ -1,20 +1,22 @@
 // HomePage.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:full_stack_project/features/cafe/models/cafe.dart' as CafeModel;
 import 'package:full_stack_project/features/cafe/models/cafe_list.dart';
-import 'package:full_stack_project/features/cafe/pages/add_cafe_page.dart';
-import 'package:full_stack_project/features/cafe/pages/cafe_detail_page.dart';
+import 'package:full_stack_project/features/cafe/pages/cafe/add_cafe_page.dart';
+import 'package:full_stack_project/features/cafe/pages/cafe/cafe_detail_page.dart';
 import 'package:full_stack_project/features/cafe/pages/community_page.dart';
-import 'package:full_stack_project/features/cafe/pages/review_page.dart';
+import 'package:full_stack_project/features/cafe/pages/review/review_page.dart';
+import 'package:full_stack_project/features/cafe/widgets/myPage_widget.dart';
 import 'package:full_stack_project/features/cafe/widgets/profile_widget.dart';
 import 'package:provider/provider.dart';
 
+
 class HomePage extends StatefulWidget {
   final String username;
-  final Map<String, dynamic>? cafeData; // Use Map<String, dynamic> instead of dynamic
+  final Map<String, dynamic>? cafeData;
   final bool showAddButton;
+
   HomePage({Key? key, this.cafeData, this.showAddButton = true, required this.username}) : super(key: key);
 
   @override
@@ -23,6 +25,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
+  TextEditingController _usernameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +34,12 @@ class _HomePageState extends State<HomePage> {
         index: _currentIndex,
         children: [
           Container(
-            // 배경 이미지 추가 부분
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/jpg/background_home_image.jpg'), // 배경 이미지 경로
+                image: AssetImage('assets/jpg/background_home_image.jpg'),
                 fit: BoxFit.cover,
               ),
-              color: Colors.black.withOpacity(0.3), // 검은색 배경에 0.7의 투명도 추가
+              color: Colors.black.withOpacity(0.3),
             ),
             child: Column(
               children: [
@@ -73,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                                           style: TextStyle(
                                             fontSize: 13,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.grey,
+                                            color: Color.fromARGB(255, 108, 105, 105),
                                           ),
                                         ),
                                         SizedBox(height: 8),
@@ -104,28 +106,31 @@ class _HomePageState extends State<HomePage> {
           ),
           ReviewPage(),
           CommunityPage(),
+          MyPage(username: widget.username,
+                      usernameController: _usernameController, // Pass the usernameController here
+                      ), // Add MyPage widget here
         ],
       ),
-floatingActionButton: _currentIndex == 0 && Provider.of<CafeList>(context).cafes.isNotEmpty
-    ? FloatingActionButton(
-        backgroundColor: Colors.grey[200],
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddCafePage(username: widget.username), // Provide the username
-            ),
-          );
-        },
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Icon(
-          Icons.add,
-          color: Colors.black,
-        ),
-      )
-    : null,
+      floatingActionButton: _currentIndex == 0 && Provider.of<CafeList>(context).cafes.isNotEmpty
+          ? FloatingActionButton(
+              backgroundColor: Colors.grey[200],
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddCafePage(username: widget.username),
+                  ),
+                );
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Icon(
+                Icons.add,
+                color: Colors.black,
+              ),
+            )
+          : null,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         items: [

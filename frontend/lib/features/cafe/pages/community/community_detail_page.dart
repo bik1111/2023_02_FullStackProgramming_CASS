@@ -2,9 +2,9 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:full_stack_project/features/cafe/api/api_service.dart';
-import 'package:full_stack_project/features/cafe/pages/create_post_page.dart';
-import 'package:full_stack_project/features/cafe/pages/modify_post_page.dart';
-import 'package:full_stack_project/features/cafe/widgets/comment_section.dart';
+import 'package:full_stack_project/features/cafe/pages/community/create_post_page.dart';
+import 'package:full_stack_project/features/cafe/pages/community/modify_post_page.dart';
+import 'package:full_stack_project/features/cafe/widgets/community/comment_section.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

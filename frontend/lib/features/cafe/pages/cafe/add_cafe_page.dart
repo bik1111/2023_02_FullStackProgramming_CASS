@@ -5,7 +5,7 @@ import 'package:full_stack_project/features/cafe/models/cafe_list.dart';
 import 'package:full_stack_project/features/cafe/pages/home_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import '../api/api_service.dart';
+import '../../api/api_service.dart';
 
 class AddCafePage extends StatefulWidget {
   final String username;

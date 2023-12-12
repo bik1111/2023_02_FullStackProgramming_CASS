@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:full_stack_project/features/cafe/api/api_service.dart';
 import 'package:full_stack_project/features/cafe/models/comment.dart';
-import 'package:full_stack_project/features/cafe/widgets/edit_comment_screen.dart';
+import 'package:full_stack_project/features/cafe/widgets/community/edit_comment_screen.dart';
 
 class CommentSection extends StatefulWidget {
   final int postId;

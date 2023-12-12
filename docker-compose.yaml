@@ -14,7 +14,7 @@ services:
     networks:
       - monitoring
     volumes:
-      - .:/src
+      - .:/app
     depends_on:
       - mysql-server
       - redis
@@ -31,7 +31,7 @@ services:
       - '3306:3306'
     volumes:
       - mysql-data:/var/lib/mysql
-
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   redis:
     image: redis:latest
     command: [ "redis-server", "--bind", "redis", "--port", "6379" ]

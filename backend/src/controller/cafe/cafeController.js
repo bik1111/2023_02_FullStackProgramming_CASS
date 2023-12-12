@@ -71,7 +71,7 @@ export const getAllCafeInformationWithPaging = async (req, res) => {
 try {
     const getAllCafeInfoResult = await getAllCafeInfo();
     console.log(getAllCafeInfoResult);
-    const { page } = req.params;
+    const { page } = int(req.params);
     const getAllCafeInfoResultWithPaging = await pagination(getAllCafeInfoResult, page, 10 ,10);
 
     return res.status(200).json({
