@@ -172,7 +172,7 @@ class _CommentSectionState extends State<CommentSection> {
   Future<List<Comment>> _fetchComments() async {
     try {
       // Replace 'localhost:3000' with your actual API base URL
-      final getComment = GetComment('localhost:3000');
+      final getComment = GetComment('127.0.0.1:3000');
 
       final response = await getComment.getHttpResponse(
         communityId: widget.communityId.toString(),
@@ -212,7 +212,7 @@ class _CommentSectionState extends State<CommentSection> {
     int contentId = widget.postId;
 
     if (newComment.isNotEmpty) {
-      CreateComment createComment = CreateComment('localhost:3000');
+      CreateComment createComment = CreateComment('');
 
       try {
         await createComment.postHttpResponse(
@@ -270,7 +270,7 @@ class _CommentSectionState extends State<CommentSection> {
 
   void _deleteComment(Comment comment) async {
     try {
-      final deleteComment = DeleteComment('localhost:3000');
+      final deleteComment = DeleteComment('127.0.0.1:3000');
 
       final response = await deleteComment.deleteHttpResponse(
         communityId: comment.communityId.toString(),

@@ -83,7 +83,7 @@ class _ReviewPageState extends State<ReviewPage> {
   }
 
   Future<void> _fetchCafeList(int page) async {
-    final apiUrl = 'http://localhost:3000/api/cafe/$page/';
+    final apiUrl = 'http://127.0.0.1:3000/api/cafe/$page/';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));

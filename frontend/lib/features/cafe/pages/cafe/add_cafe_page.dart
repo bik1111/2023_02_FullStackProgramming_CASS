@@ -220,7 +220,7 @@ class _AddCafePageState extends State<AddCafePage> {
 
     if (cafeName.isNotEmpty) {
       final encodedCafeName = Uri.encodeComponent(cafeName);
-      final uri = Uri.parse('http://localhost:3000/api/cafe/search?cafeName=$encodedCafeName');
+      final uri = Uri.parse('http://127.0.0.1:3000/api/cafe/search?cafeName=$encodedCafeName');
       final cafeApi = CafeApi(uri.toString());
 
       try {

@@ -21,7 +21,7 @@ class _CommunityPageState extends State<CommunityPage> {
   }
 
   Future<void> _fetchCommunities() async {
-    final apiUrl = 'http://localhost:3000/api/community'; // Replace with your API endpoint
+    final apiUrl = 'http://127.0.0.1:3000/api/community'; // Replace with your API endpoint
 
     try {
       final response = await http.get(Uri.parse(apiUrl));

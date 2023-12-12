@@ -4,11 +4,11 @@
   'case-sensitive': 'false',
   'roots': [{
     'type': 'directory',
-    'name': "/Users/jincheol/Desktop/full_stack_project/frontend/build/macos/Build/Products/Debug/file_selector_macos/file_selector_macos.framework/Modules"
+    'name': "/Users/jincheol/Desktop/2023_02_FullStackProgramming_CASS/frontend/build/macos/Build/Products/Debug/file_selector_macos/file_selector_macos.framework/Modules"
     'contents': [{
       'type': 'file',
       'name': "module.modulemap",
-      'external-contents': "/Users/jincheol/Desktop/full_stack_project/frontend/build/macos/Build/Intermediates.noindex/Pods.build/Debug/file_selector_macos.build/unextended-module.modulemap",
+      'external-contents': "/Users/jincheol/Desktop/2023_02_FullStackProgramming_CASS/frontend/build/macos/Build/Intermediates.noindex/Pods.build/Debug/file_selector_macos.build/unextended-module.modulemap",
     }]
   }]
 }

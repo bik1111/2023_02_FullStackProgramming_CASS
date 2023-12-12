@@ -328,7 +328,7 @@ class DeleteReview {
 
 class ApiService {
   static Future<List<Map<String, dynamic>>> fetchCommunities() async {
-    final url = Uri.parse('http://localhost:3000/api/community');
+    final url = Uri.parse('http://127.0.0.1:3000/api/community');
 
     try {
       final response = await http.get(url);

@@ -31,7 +31,7 @@ class _CommunityDetailPageState extends State<CommunityDetailPage> {
     _fetchCommunityDetails();
   }
   Future<void> _fetchCommunityDetails() async {
-    final apiUrl = 'http://localhost:3000/api/community/${widget.communityId}';
+    final apiUrl = 'http://127.0.0.1:3000/api/community/${widget.communityId}';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));

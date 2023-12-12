@@ -10,11 +10,11 @@
 		</data>
 		<key>Resources/flutter_assets/AssetManifest.bin</key>
 		<data>
-		45fVHqLFfY81a2SF7aRV56iEk6M=
+		VoEtwzVjnHrC/eg9BtFHkT1jDzU=
 		</data>
 		<key>Resources/flutter_assets/AssetManifest.json</key>
 		<data>
-		AUpb+OhtLDBlcXE9AmLRVuCHteI=
+		UVGEqY3bpa+OOh+MZlrtMAip3Eg=
 		</data>
 		<key>Resources/flutter_assets/FontManifest.json</key>
 		<data>
@@ -56,13 +56,21 @@
 		<data>
 		ytyIUW26rxngAJ8tDB42Mp/iXH8=
 		</data>
+		<key>Resources/flutter_assets/assets/jpg/background_home_image.jpg</key>
+		<data>
+		vBFc1Xd7pRKHtLlxZCyUOrqgXuo=
+		</data>
+		<key>Resources/flutter_assets/assets/jpg/background_image.jpg</key>
+		<data>
+		ynK4vV7hkVJbK3rHjEQljUbp3Es=
+		</data>
 		<key>Resources/flutter_assets/assets/jpg/cafe.jpg</key>
 		<data>
 		QepyXeATisoh0bDUNQaPnLaV74o=
 		</data>
-		<key>Resources/flutter_assets/assets/profile_picture.jpg</key>
+		<key>Resources/flutter_assets/assets/jpg/profile.jpg</key>
 		<data>
-		WVjBUHvtuKOV4EFjh5AFGuoNMMg=
+		kWdV7Cd6kYNJvLUo0SIu2sAX22U=
 		</data>
 		<key>Resources/flutter_assets/assets/svg/coffee.svg</key>
 		<data>
@@ -90,7 +98,7 @@
 		</data>
 		<key>Resources/flutter_assets/kernel_blob.bin</key>
 		<data>
-		gEPnIUuZmIhnisyXMs5Ie4C9O8s=
+		4IMkIzBa6aU8ULoR5/ujjeLJ11Y=
 		</data>
 		<key>Resources/flutter_assets/shaders/ink_sparkle.frag</key>
 		<data>
@@ -114,14 +122,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			nigV7TYObAZdO9XLeaX55xJ0JZcxswtU9dCBHo+AG54=
+			ffN/9oz4ckpalGHMkPfi/0ZAudmf0prSBUtMOHEGcEw=
 			</data>
 		</dict>
 		<key>Resources/flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			BzcfMAhyAuCw8BGqlcSIeW+EKRb51fdUSf76jSdeRFQ=
+			1p+4eAndyvj+2Bd7j7LX5W7dH7PV8PtdqSXy3U8KO54=
 			</data>
 		</dict>
 		<key>Resources/flutter_assets/FontManifest.json</key>
@@ -194,6 +202,20 @@
 			X2XP59mZNO5z3pg98mFUZmxlQY1zpi9jQRCUXy3cDK8=
 			</data>
 		</dict>
+		<key>Resources/flutter_assets/assets/jpg/background_home_image.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			WaUgoq3RaEu6370D7eLijEDhKDauZzkYWBCvp0QmNmI=
+			</data>
+		</dict>
+		<key>Resources/flutter_assets/assets/jpg/background_image.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			eYTrqaTW4NajDjzAHonS+nyjeA+Ojb6hnLGoD4rKpvE=
+			</data>
+		</dict>
 		<key>Resources/flutter_assets/assets/jpg/cafe.jpg</key>
 		<dict>
 			<key>hash2</key>
@@ -201,11 +223,11 @@
 			npC8vD2eh7wGF4QrbEkk4SFDJ0v05ozNLb4RVuU+urc=
 			</data>
 		</dict>
-		<key>Resources/flutter_assets/assets/profile_picture.jpg</key>
+		<key>Resources/flutter_assets/assets/jpg/profile.jpg</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			+SDEZHAHCVI5TqB011taJbjx0sUz9J3/qoY0cQmz1h4=
+			GQkOdC0P1efcOa52d2QnkBkAqGo54sa3prx7UDrUTdM=
 			</data>
 		</dict>
 		<key>Resources/flutter_assets/assets/svg/coffee.svg</key>
@@ -254,7 +276,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Lyszz4MOZhdODOWARqwzceb+dhZIWGKvHm3RxvApNoE=
+			VyHldfXh1CxzsCBSiLoxm3YR2M9B4kvOCQBBCzeQniY=
 			</data>
 		</dict>
 		<key>Resources/flutter_assets/shaders/ink_sparkle.frag</key>
