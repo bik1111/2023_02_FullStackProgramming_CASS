@@ -12,17 +12,23 @@ import reviewRouter from './src/routers/review/reviewRouter.js';
 import commentRouter from './src/routers/comment/commentRouter.js';
 import { swaggerUi, specs } from "./src/swagger/swagger.js";
 
-
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(cors({
+  origin: "http://localhost:3000", // Change this to your specific origin
   origin: "*",
   credentials: true,
   optionsSuccessStatus: 200,
 }));
 
+// Additional headers to handle credentials
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // Change this to your specific origin
+  res.header("Access-Control-Allow-Credentials", true);
+  next();
+});
 
 app.use('/', crawlingRouter);
 app.use('/', userRouter);
@@ -34,6 +40,7 @@ app.use('/', commentRouter);
 
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

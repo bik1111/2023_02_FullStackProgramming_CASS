@@ -58,7 +58,7 @@ Future<void> _loadReviews() async {
 
 Future<void> _submitReview() async {
   print('Submitting review...');
-  final reviewApi = createReviewApi('127.0.0.1:3000/api/create/review');
+  final reviewApi = createReviewApi('localhost:3000/api/create/review');
   final Map<String, dynamic> reviewData = {
     'cafe_id': widget.cafe.cafe_id,
     'rating': rating,
@@ -71,7 +71,9 @@ Future<void> _submitReview() async {
     print('Response type: ${response.body.runtimeType}');
 
     if (response.statusCode == 200) {
+      // Wait for the reviews to be updated before proceeding
       await _loadReviews();
+
       print('Review submitted successfully');
     } else {
       print('Failed to submit review. Server returned status ${response.statusCode}');
@@ -82,9 +84,10 @@ Future<void> _submitReview() async {
 }
 
 
+
   Future<List<Review>> getReviews(int cafeId) async {
     try {
-      final getReviewEachCafe = GetReviewEachCafe('.200.182:3000/api/review/$cafeId');
+      final getReviewEachCafe = GetReviewEachCafe('localhost:3000/api/review/$cafeId');
       final response = await getReviewEachCafe.getHttpResponse();
 
       if (response.statusCode == 200) {
@@ -167,7 +170,7 @@ Future<void> _editReview(Review review, int reviewId) async {
               // You can use the updatedRating and updatedCommentController.text
 
               // Update the review on the server
-              final modifyReviewApi = ModifyReview('/api/modify' + '/${review.review_id}');
+              final modifyReviewApi = ModifyReview('localhost:3000/api/modify' + '/${review.review_id}');
               final Map<String, dynamic> modifiedReviewData = {
                 'rating': updatedRating,
                 'comment': updatedCommentController.text,
@@ -215,7 +218,7 @@ Future<void> _deleteReview(int reviewId) async {
             onPressed: () async {
               Navigator.of(context).pop(); // Close the dialog
               // Call the DeleteReview API here
-              final deleteReviewApi = DeleteReview('127.0.0.1:3000'); // Replace with your actual base URL
+              final deleteReviewApi = DeleteReview('localhost:3000'); // Replace with your actual base URL
 
               try {
                 final response = await deleteReviewApi.deleteReview(reviewId.toString());

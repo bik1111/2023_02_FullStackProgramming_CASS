@@ -192,6 +192,54 @@ reviewRouter.route('/api/review/:cafeId').get(getReviewEachCafe);
  *                 message: "리뷰 수정 중 에러가 발생했습니다."
  */
 reviewRouter.route('/api/modify/:reviewId').put(modifyReview);
+
+
+
+/**
+ * @swagger
+ * /api/delete/{reviewId}:
+ *   delete:
+ *     tags: [Review API]
+ *     summary: 리뷰 삭제
+ *     description: 특정 리뷰를 삭제합니다.
+ *     parameters:
+ *       - in: path
+ *         name: reviewId
+ *         required: true
+ *         description: 삭제할 리뷰의 ID
+ *         schema:
+ *           type: number
+ *     responses:
+ *       '200':
+ *         description: 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 ok:
+ *                   type: boolean
+ *                 msg:
+ *                   type: string
+ *       '500':
+ *         description: 서버 에러
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 ok:
+ *                   type: boolean
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *             example:
+ *               ok: false
+ *               error:
+ *                 message: "리뷰 삭제 중 에러가 발생했습니다."
+ */
 reviewRouter.route('/api/delete/:reviewId').delete(deleteReview);
 
 export default reviewRouter;

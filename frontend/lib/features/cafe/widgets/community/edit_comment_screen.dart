@@ -56,7 +56,7 @@ class _EditCommentScreenState extends State<EditCommentScreen> {
     Comment editedComment = widget.comment.copyWith(content: editController.text);
 
     try {
-      final modifyComment = ModifyComment('127.0.0.1:3000');
+      final modifyComment = ModifyComment('localhost:3000');
 
       final response = await modifyComment.putHttpResponse(
         communityId: editedComment.communityId.toString(),

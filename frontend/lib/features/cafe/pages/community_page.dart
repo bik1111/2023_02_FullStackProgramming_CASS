@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:full_stack_project/features/cafe/api/api_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:full_stack_project/features/cafe/pages/community/community_detail_page.dart';
 import 'package:full_stack_project/features/cafe/pages/create_community_page.dart';
@@ -21,7 +22,7 @@ class _CommunityPageState extends State<CommunityPage> {
   }
 
   Future<void> _fetchCommunities() async {
-    final apiUrl = 'http://127.0.0.1:3000/api/community'; // Replace with your API endpoint
+    final apiUrl = 'http://localhost:3000/api/community'; // Replace with your API endpoint
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -220,9 +221,25 @@ class _CommunityPageState extends State<CommunityPage> {
     );
   }
 
-  Future<void> _deleteCommunity(int communityId) async {
-    // ... (existing delete community logic)
+Future<void> _deleteCommunity(int communityId) async {
+  try {
+    final deleteCommunity = DeleteCommunity('localhost:3000'); // Replace with your API server URL
+    final response = await deleteCommunity.deleteHttpResponse(
+      communityId: communityId, // Ensure communityId is converted to String
+    );
+
+    if (response.statusCode == 200) {
+      print('Community deleted successfully!');
+      await _fetchCommunities(); // Fetch communities again after deletion
+    } else {
+      print('Failed to delete community. Status code: ${response.statusCode}');
+      // Handle error as needed
+    }
+  } catch (e) {
+    print('Error during community deletion: $e');
+    // Handle error as needed
   }
+}
 
   void main() {
     runApp(MaterialApp(

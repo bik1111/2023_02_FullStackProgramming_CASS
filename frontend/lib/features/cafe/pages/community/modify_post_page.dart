@@ -82,7 +82,7 @@ class _ModifyPostPageState extends State<ModifyPostPage> {
       'content': _contentController.text,
     };
 
-    final apiUrl = 'http://127.0.0.1:3000/api/modify/post/${widget.postId}';
+    final apiUrl = 'http://localhost:3000/api/modify/post/${widget.postId}';
 
     try {
       final response = await http.put(

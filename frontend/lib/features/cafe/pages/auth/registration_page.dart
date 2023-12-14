@@ -26,7 +26,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
     try {
       RegisterNewUser registerNewUser =
-          RegisterNewUser('192.168.200.182:3000/api/user/register');
+          RegisterNewUser('localhost:3000/api/user/register');
       final response =
           await registerNewUser.postHttpResponse(registrationData);
 
@@ -63,7 +63,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     };
 
     try {
-      LoginAPi loginApi = LoginAPi('192.168.200.182:3000/api/user/login');
+      LoginAPi loginApi = LoginAPi('localhost:3000/api/user/login');
       final response = await loginApi.postHttpResponse(loginData);
 
       if (response.statusCode == 200) {

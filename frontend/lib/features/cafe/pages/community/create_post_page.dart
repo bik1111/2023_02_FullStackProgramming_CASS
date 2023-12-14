@@ -88,7 +88,7 @@ class _YourWritePostScreenState extends State<YourWritePostScreen> {
   }
 
   Future<void> _sendPostRequest(String title, String content, int communityId) async {
-    final apiUrl = 'http://127.0.0.1:3000/api/create/post/$communityId';
+    final apiUrl = 'http://localhost:3000/api/create/post/$communityId';
     final response = await http.post(
       Uri.parse(apiUrl),
       body: {

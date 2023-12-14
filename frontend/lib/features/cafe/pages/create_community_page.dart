@@ -124,7 +124,7 @@ Future<void> _createCommunity() async {
   final String hashtags = _hashtagsController.text;
 
   if (title.isNotEmpty) {
-    final apiEndpoint = 'http://127.0.0.1:3000/api/community/create';
+    final apiEndpoint = 'http://localhost:3000/api/community/create';
 
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiEndpoint));

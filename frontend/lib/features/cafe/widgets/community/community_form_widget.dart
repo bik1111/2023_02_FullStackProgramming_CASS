@@ -47,7 +47,7 @@ class _CommunityFormWidgetState extends State<CommunityFormWidget> {
     final String hashtags = _hashtagsController.text;
 
     if (title.isNotEmpty) {
-      final apiHandler = CreateCommunityApi('http://127.0.0.1:3000/api/community/create');
+      final apiHandler = CreateCommunityApi('http://localhost:3000/api/community/create');
       final data = {'title': title, 'hashtags': hashtags};
 
       try {

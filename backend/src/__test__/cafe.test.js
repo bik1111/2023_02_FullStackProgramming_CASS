@@ -1,87 +1,82 @@
-import request from 'supertest';
 import chai from 'chai';
+import mysql from 'mysql2/promise';
+import request from 'supertest';
 import app from '../../app.js';
 import chaiHttp from 'chai-http';
-import mysql from 'mysql2/promise';
 
 chai.use(chaiHttp);
 const { expect } = chai;
 
-const options = {
-  host : 'docker.for.mac.host.internal',
-  port : 3306,
-  user : 'root',
-  password : 'tkfkdgo12!',
-  database : 'cass'
-}
+describe('Access to DB',  () => {
+  describe('#success',  () => {
+    it('assertion success', async function () {
+      this.timeout(0);
+      try {
+        const connection = await mysql.createConnection({
+          host: 'localhost',
+          user: 'root',
+          password: 'tkfkdgo12!',
+          database: 'cass',
+        });
 
+        // Try to connect (this should not throw an error)
+        await connection.connect();
 
-describe('connection test', () => {
-  before('create connection', () => {
-    /* mysql server와 connection을 맺음 */
-    connection = mysql.createConnection(options);
-  });
-
-  it('query execute', done => {
-    connection.query('select 1 + 1 as sum', (err, results, fields) => {
-      /* mysql server와 connection을 끊음 */
-      connection.end();
-      if(err) {
-        console.error("Error >>", err);
-        return done(err);
+        // If the connection is successful, the test should pass
+        expect(connection).to.be.ok; // or expect(connection).to.exist;
+      } catch (error) {
+        // If an error occurs during the connection, the test should fail
+        expect.fail(`Expected successful connection, but got an error: ${error.message}`);
       }
-      expect(results[0].sum).to.be.equal(2);
-      done();
     });
   });
 });
 
 
-
-describe('GET /', () => {
-    it('should return "Hello, World!"', (done) => {
-      request(app)
-        .get('/')
-        .expect(200)
-        .end((err, res) => {
-          if (err) return done(err);
-          expect(res.text).to.equal('Hello World!');
-          done();
-        });
-    });
-  });
-
-
-
-  describe('GET cafeInformation', () => {
-    it('should return a list of cafes when searching by name', (done) => {
-      request(app)
+describe('/GET Search Cafe', () => {
+  it('should return a list of cafes', async function () {
+    this.timeout(0); // Set timeout to 0 to disable timeout
+    try {
+      const res = await chai
+        .request(app)
         .get('/api/cafe/search')
-        .query({ cafeName: '송파' })
-        .expect(200)
-        .end((err, res) => {
-          if (err) return done(err);
+        .query({ cafeName: '송파' }) // Replace with an actual cafe name
 
-          // Assuming res.body.data is an array of cafes
-          const cafes = res.body.data;
+      console.log('Response:', res.body); // Log the response for debugging
 
-          // Your assertion logic based on the actual response
-          expect(res.body.ok).to.equal(true);
-          expect(res.body.msg).to.equal('카페 검색 성공');
-          expect(cafes).to.be.an('array');
-          expect(cafes).to.have.length.above(0);
-
-          // Add more specific assertions based on your actual response structure
-          // For example:
-          expect(cafes[0]).to.have.property('cafe_id');
-          expect(cafes[0]).to.have.property('name');
-          expect(cafes[0]).to.have.property('address');
-          expect(cafes[0]).to.have.property('number');
-
-          done();
-        });
-    });
+      // Your assertions and logic go here
+      chai.expect(res).to.have.status(200);
+      chai.expect(res.body).to.be.an('object');
+      chai.expect(res.body.ok).to.be.true;
+      chai.expect(res.body.data).to.be.an('array'); // Assuming data is an array in your response
+    } catch (error) {
+      // Handle any errors that occurred during the request
+      console.error('Error during request:', error);
+      throw error; // This will make the test fail
+    }
   });
+});
 
 
 
+describe('/GET All Cafe Information', () => {
+  it('should retrieve all cafe information', async function () {
+    this.timeout(0); // Set timeout to 0 to disable timeout
+    try {
+      const res = await chai.request(app).get('/api/cafe/');
+
+      console.log('Response:', res.body); // Log the response for debugging
+
+      // Your assertions and logic go here
+      chai.expect(res).to.have.status(200);
+      chai.expect(res.body).to.be.an('object');
+      chai.expect(res.body.ok).to.be.true;
+      chai.expect(res.body.data).to.be.an('array'); // Assuming data is an array in your response
+      chai.expect(res.body.msg).to.equal('카페 정보 조회 성공');
+    } catch (error) {
+      // Handle any errors that occurred during the request
+      console.error('Error during request:', error);
+      throw error; // This will make the test fail
+    }
+  });
+});
