@@ -80,8 +80,6 @@ class ModifyReview {
   }
 }
 
-
-
 class DeleteReview {
   late String _baseUrl;
 

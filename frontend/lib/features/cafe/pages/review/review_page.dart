@@ -70,6 +70,7 @@ class _ReviewPageState extends State<ReviewPage> {
   late int _currentPage;
   late int _totalPages;
   late ScrollController _scrollController;
+  late bool _loading;
 
   @override
   void initState() {
@@ -79,6 +80,7 @@ class _ReviewPageState extends State<ReviewPage> {
     _currentPage = 1;
     _totalPages = 1;
     _scrollController = ScrollController();
+    _loading = true;
     _fetchCafeList(_currentPage);
   }
 
@@ -110,13 +112,16 @@ class _ReviewPageState extends State<ReviewPage> {
           _filteredCafeList = List.from(_cafeList);
           _currentPage = validCurrPage;
           _totalPages = validTotalPage;
+          _loading = false; // 데이터 로딩 완료
         });
       } else {
         print('Failed to load cafe information. Status code: ${response.statusCode}');
         print('Response body: ${response.body}');
+        _loading = false; // 에러 발생 시 로딩 완료
       }
     } catch (e) {
       print('Exception during cafe data fetching: $e');
+      _loading = false; // 에러 발생 시 로딩 완료
     }
   }
 
@@ -141,95 +146,115 @@ class _ReviewPageState extends State<ReviewPage> {
       appBar: AppBar(
         title: Text('Cafe Review Page'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification scrollInfo) {
-                if (scrollInfo is ScrollEndNotification &&
-                    scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent) {
-                  _loadMoreCafes(_currentPage + 1);
-                }
-                return false;
-              },
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: _filteredCafeList.length,
-                itemBuilder: (context, index) {
-                  final cafe = _filteredCafeList[index];
-                  return _buildCafeCard(cafe, context);
-                },
-              ),
+      body: _loading
+          ? Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                Expanded(
+                  child: NotificationListener<ScrollNotification>(
+                    onNotification: (ScrollNotification scrollInfo) {
+                      if (scrollInfo is ScrollEndNotification &&
+                          scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent) {
+                        _loadMoreCafes(_currentPage + 1);
+                      }
+                      return false;
+                    },
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: _filteredCafeList.length,
+                      itemBuilder: (context, index) {
+                        final cafe = _filteredCafeList[index];
+                        return _buildCafeCard(cafe, context);
+                      },
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: PaginationButtons(
+                    startPage: _currentPage - 2,
+                    endPage: _currentPage + 2,
+                    currPage: _currentPage,
+                    totalPage: _totalPages,
+                    onPageSelected: _onPageSelected,
+                  ),
+                ),
+              ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: PaginationButtons(
-              startPage: _currentPage - 2,
-              endPage: _currentPage + 2,
-              currPage: _currentPage,
-              totalPage: _totalPages,
-              onPageSelected: _onPageSelected,
-            ),
-          ),
-        ],
-      ),
     );
   }
 
   Widget _buildCafeCard(Cafe cafe, BuildContext context) {
-    return Card(
+    return Container(
       margin: const EdgeInsets.all(8.0),
-      elevation: 5.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              cafe.name,
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.green,
+      child: Card(
+        elevation: 0.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15.0),
+            boxShadow: [
+              BoxShadow(
+          color: Colors.grey[200] ?? Colors.grey, // Use Colors.grey as a default color
+                blurRadius: 10.0,
+                spreadRadius: 2.0,
               ),
-            ),
-            SizedBox(height: 8.0),
-            Text(
-              'Address: ${cafe.address}',
-              style: TextStyle(
-                fontSize: 16.0,
-                color: Colors.grey[800],
-              ),
-            ),
-            SizedBox(height: 4.0),
-            Text(
-              'Number: ${cafe.number}',
-              style: TextStyle(
-                fontSize: 16.0,
-                color: Colors.grey[800],
-              ),
-            ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ReviewFormPage(cafe: cafe),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  cafe.name,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
                   ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Colors.green,
-                onPrimary: Colors.white,
-              ),
-              child: Text('Leave a Review'),
+                ),
+                SizedBox(height: 8.0),
+                Text(
+                  'Address: ${cafe.address}',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.grey[800],
+                  ),
+                ),
+                SizedBox(height: 4.0),
+                Text(
+                  'Number: ${cafe.number}',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.grey[800],
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ReviewFormPage(cafe: cafe),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green,
+                    onPrimary: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  icon: Icon(Icons.rate_review),
+                  label: Text('Leave a Review'),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

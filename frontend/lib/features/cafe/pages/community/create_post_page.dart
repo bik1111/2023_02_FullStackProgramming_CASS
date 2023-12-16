@@ -19,7 +19,14 @@ class _YourWritePostScreenState extends State<YourWritePostScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('게시글 작성하기'),
-        backgroundColor: Colors.green, // Change the app bar color here
+        backgroundColor: Colors.green,
+        // 추가: 뒤로가기 아이콘 추가
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -34,11 +41,17 @@ class _YourWritePostScreenState extends State<YourWritePostScreen> {
               ),
             ),
             SizedBox(height: 8.0),
+            // 변경: 입력 필드 스타일 개선
             TextField(
               controller: _titleController,
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter the title',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                hintText: '제목을 입력하세요',
+                // 추가: 입력 필드에 그림자 효과
+                filled: true,
+                fillColor: Colors.grey[200],
               ),
             ),
             SizedBox(height: 16.0),
@@ -50,12 +63,18 @@ class _YourWritePostScreenState extends State<YourWritePostScreen> {
               ),
             ),
             SizedBox(height: 8.0),
+            // 변경: 입력 필드 스타일 개선
             TextField(
               controller: _contentController,
               maxLines: null,
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter the content',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                hintText: '내용을 입력하세요',
+                // 추가: 입력 필드에 그림자 효과
+                filled: true,
+                fillColor: Colors.grey[200],
               ),
             ),
             SizedBox(height: 16.0),
@@ -70,7 +89,11 @@ class _YourWritePostScreenState extends State<YourWritePostScreen> {
                   Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.green, // Change the button color here
+                  primary: Colors.green,
+                  // 변경: 버튼 스타일 조정
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),

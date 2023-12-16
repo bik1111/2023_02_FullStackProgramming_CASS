@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-
 class RegisterNewUser {
 
   late String _baseUrl;

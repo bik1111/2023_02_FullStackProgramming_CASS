@@ -53,5 +53,4 @@ const crawlingRouter = express.Router();
  */
 crawlingRouter.route('/api/crawl').get(crawlstarBucksInfo);
 
-
 export default crawlingRouter;

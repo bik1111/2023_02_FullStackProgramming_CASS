@@ -15,8 +15,6 @@ class Cafe {
     required this.longitude,
   });
 
-  // Existing code...
-
   factory Cafe.fromJson(Map<String, dynamic> json) {
     return Cafe(
       cafe_id: json['cafe_id'].toString() ?? 'N/A', // Keep it as String if needed

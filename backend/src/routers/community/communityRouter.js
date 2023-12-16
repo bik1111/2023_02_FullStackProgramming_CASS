@@ -403,7 +403,6 @@ communityRouter.route('/api/modify/post/:id').put(modfiyPost);
  */
 communityRouter.route('/api/delete/post/:id').delete(deletePost);
 
-
 communityRouter.route('/api/delete/community/:communityId').delete(deletCommunity);
 
 export default communityRouter;

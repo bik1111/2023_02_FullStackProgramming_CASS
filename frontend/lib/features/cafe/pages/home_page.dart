@@ -79,21 +79,22 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ),
                                         SizedBox(height: 8),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => AddCafePage(username: widget.username),
-                                              ),
-                                            );
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: const Color.fromARGB(255, 37, 118, 39),
-                                            foregroundColor: Colors.white,
-                                          ),
-                                          child: Text('나만의 카페 추가하기'),
-                                        ),
+ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddCafePage(username: widget.username),
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: const Color.fromARGB(255, 37, 118, 39),
+    foregroundColor: Colors.white,
+    elevation: 5,
+  ),
+  child: Text('나만의 카페 추가하기'),
+),
                                       ],
                                     ),
                                   );
@@ -135,19 +136,28 @@ class _HomePageState extends State<HomePage> {
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/svg/home.svg'),
+            icon: SvgPicture.asset(
+              'assets/svg/home.svg',
+              color: _currentIndex == 0 ? Colors.green : Colors.grey,
+              ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/svg/coffee.svg'),
+            icon: SvgPicture.asset('assets/svg/coffee.svg',
+            color: _currentIndex == 1 ? Colors.green : Colors.grey,
+          ),
             label: 'Review',
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/svg/community.svg'),
+            icon: SvgPicture.asset('assets/svg/community.svg',
+            color: _currentIndex == 2 ? Colors.green : Colors.grey,
+            ),
             label: 'Community',
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/svg/mypage.svg'),
+            icon: SvgPicture.asset('assets/svg/mypage.svg',
+            color: _currentIndex == 3 ? Colors.green : Colors.grey,
+          ),
             label: 'My Page',
           ),
         ],

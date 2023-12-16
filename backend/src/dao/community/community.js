@@ -24,7 +24,7 @@ export const getMyCommunityDAO = async (connection) => {
 export const getMyCommunityBoardInfoDAO = async (connection, id) => {
 
     const getMyCommunityBoardInfoQuery = `
-        SELECT cb.community_id, cb.content_id, cb.content_title, cb.content_detail, c.title as community_title
+        SELECT cb.community_id, cb.createdAt, cb.content_id, cb.content_title, cb.content_detail, c.title as community_title
         FROM community_board cb
         JOIN community c ON cb.community_id = c.community_id
         WHERE cb.community_id = ?
